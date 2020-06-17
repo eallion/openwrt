@@ -6,6 +6,8 @@
 
 Build OpenWrt using GitHub Actions
 
+![Build OpenWrt](https://github.com/eallion/openwrt/workflows/Build%20OpenWrt/badge.svg)
+
 [Read the details in my blog (in Chinese) | 中文教程](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
 ## Usage
