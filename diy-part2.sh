@@ -13,3 +13,8 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 
 # Add serverchan
 git clone https://github.com/tty228/luci-app-serverchan.git package/lean/luci-app-serverchan
+
+# Add openclash
+git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
+cd OpenClash
+mv luci-app-openclash ../package/lean/luci-app-openclash
