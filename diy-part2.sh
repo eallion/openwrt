@@ -18,3 +18,7 @@ git clone https://github.com/tty228/luci-app-serverchan.git package/lean/luci-ap
 git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
 cd OpenClash
 mv luci-app-openclash ../package/lean/luci-app-openclash
+
+# Add xlnetacc
+rm -rf package/lean/luci-app-xlnetacc
+git clone https://github.com/awesome-openwrt/luci-app-xlnetacc.git package/lean/luci-app-xlnetacc
