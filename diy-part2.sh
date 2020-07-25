@@ -22,3 +22,7 @@ mv luci-app-openclash ../package/lean/luci-app-openclash
 # Add xlnetacc
 rm -rf package/lean/luci-app-xlnetacc
 git clone https://github.com/awesome-openwrt/luci-app-xlnetacc.git package/lean/luci-app-xlnetacc
+
+# Add JD dailybonus
+git clone https://github.com/jerrykuku/node-request.git package/lean/node-request
+git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/lean/luci-app-jd-dailybonus
