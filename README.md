@@ -25,11 +25,21 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 
 ### Customs
 
-##### 1. Image's setting
+##### 1. Add lienol's packages
+```
+sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+```
+
+##### 2. Default IP
+```
+192.168.0.1
+```
+
+##### 3. Image's setting
 - GZip images	
 - Set 320MB root filesystem partigion size
 
-##### 2. Luci apps
+##### 4. Luci apps
 - luci-app-accesscontrol	
 - luci-app-adbyby-plus	
 - luci-app-arpbind	
@@ -41,7 +51,8 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 - luci-app-filetransfer	
 - luci-app-firewall	
 - luci-app-hd-idle	
-- luci-app-jd-dailybonus	
+- [luci-app-jd-dailybonus](https://github.com/jerrykuku/luci-app-jd-dailybonus.git)
+  - [node-request](https://github.com/jerrykuku/node-request.git)
 - luci-app-minidlna	
 - luci-app-netdata	
 - luci-app-nlbwmon	
@@ -49,7 +60,7 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 - luci-app-qbittorrent	
 - luci-app-ramfree	
 - luci-app-samba	
-- luci-app-serverchan	
+- [luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)
 - luci-app-sfe	
 - luci-app-sqm	
 - luci-app-ssr-plus	
@@ -63,7 +74,7 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 - luci-app-xlnetacc
 - ……
 
-##### 3. Others
+##### 5. Others
 - Enable Nginx for luci and web service
 - Enable openssh-sftp-server
 - Enable curl and wget
