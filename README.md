@@ -25,7 +25,7 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 
 ### Customs
 
-##### 1. Add lienol's packages
+##### 1. Add [lienol's packages](https://github.com/Lienol/openwrt-package)
 ```
 sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 ```
