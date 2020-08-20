@@ -30,4 +30,4 @@ git clone --single-branch --branch master https://github.com/vernesong/OpenClash
 cd OpenClash
 mv luci-app-openclash ../package/lean/luci-app-openclash
 cd ..
-rm OpenClash
+rm -rf OpenClash
