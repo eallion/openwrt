@@ -138,15 +138,23 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
+    - name:  Pack targets_dir
+      if: steps.compile.outputs.status == 'success'
+      run: |
+        cd openwrt/bin/targets/
+        tar -cvf  Openwrt-x86-64-${{ env.FILE_DATE }}.tar ./
+        mv *.tar ..
+
     - name: Upload firmware to Release
       uses: svenstaro/upload-release-action@v2
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         repo_token: ${{ secrets.TOKEN_FOR_OPENWRT }}
-        file: /home/runner/work/openwrt/openwrt/openwrt/bin/targets/x86/64/*
-        asset_name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
-        tag: ${{ github.ref }}
+        file: openwrt/bin/*
+#        asset_name: Openwrt-x86-64-${{ env.FILE_DATE }}.tar
+        tag: ${{ env.FILE_DATE }}
         overwrite: true
+        file_glob: true
         body: "Openwrt x86-64 generic squashfs combined image"
 
     - name: Upload firmware to cowtransfer
