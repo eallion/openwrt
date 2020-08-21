@@ -109,7 +109,7 @@ jobs:
         echo "::set-output name=status::success"
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "::set-env name=DEVICE_NAME::_$(cat DEVICE_NAME)"
-        echo "::set-env name=FILE_DATE::_$(date +"%Y%m%d%H%M")"
+        echo "::set-env name=FILE_DATE::$(date +"%Y%m%d%H%M")"
 
     - name: Check space usage
       if: (!cancelled())
@@ -135,22 +135,22 @@ jobs:
       uses: actions/upload-artifact@main
       if: steps.organize.outputs.status == 'success' && !cancelled()
       with:
-        name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
+        name: OpenWrt_firmware${{ env.DEVICE_NAME }}_${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name:  Pack targets_dir
-      if: steps.compile.outputs.status == 'success'
-      run: |
-        cd openwrt/bin/targets/
-        tar -cvf  Openwrt-x86-64-${{ env.FILE_DATE }}.tar ./
-        mv *.tar ..
+#    - name:  Pack targets_dir
+#      if: steps.compile.outputs.status == 'success'
+#      run: |
+#        cd openwrt/bin/targets/
+#        tar -cvf  Openwrt-x86-64-${{ env.FILE_DATE }}.tar ./
+#        mv *.tar ..
 
     - name: Upload firmware to Release
       uses: svenstaro/upload-release-action@v2
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         repo_token: ${{ secrets.TOKEN_FOR_OPENWRT }}
-        file: openwrt/bin/*
+        file: openwrt/bin/targets/x86/64/*
 #        asset_name: Openwrt-x86-64-${{ env.FILE_DATE }}.tar
         tag: ${{ env.FILE_DATE }}
         overwrite: true
@@ -174,7 +174,7 @@ jobs:
     - name: Remove old artifacts
       uses: c-hive/gha-remove-artifacts@v1
       with:
-        age: '2 days'
+        age: '7 days'
         # Optional inputs
         # skip-tags: true
         skip-recent: 2
