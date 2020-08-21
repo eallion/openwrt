@@ -8,7 +8,7 @@ Build OpenWrt using GitHub Actions
 
 ### Download
 
-<https://github.com/eallion/openwrt/releases>
+<https://github.com/eallion/openwrt/releases/latest>
 
 ### Usage
 
