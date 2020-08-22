@@ -177,12 +177,12 @@ jobs:
         age: '7 days'
         # Optional inputs
         # skip-tags: true
-        skip-recent: 2
+        skip-recent: 7
 
     - name: Delete older releases
       uses: dev-drprasad/delete-older-releases@v0.1.0
       with: 
         repo: eallion/openwrt # defaults to current repo
-        keep_latest: 2
+        keep_latest: 7
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
