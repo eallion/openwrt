@@ -9,7 +9,7 @@
 #============================================================
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.0.2/g' package/base-files/files/bin/config_generate
 
 # Add aliddns
 # git clone https://github.com/chenhw2/luci-app-aliddns.git package/lean/luci-app-aliddns

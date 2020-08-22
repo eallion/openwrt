@@ -32,7 +32,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 
 ##### 2. Default IP
 ```
-192.168.0.1
+192.168.0.2
 ```
 
 ##### 3. Image's setting
