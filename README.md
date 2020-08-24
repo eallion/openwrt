@@ -8,7 +8,7 @@ Build OpenWrt using GitHub Actions
 
 ### Download
 
-<https://github.com/eallion/openwrt/releases/latest>
+<https://github.com/eallion/openwrt/releases/latest/download/openwrt-x86-64-generic-squashfs-combined.img.gz>
 
 ### Usage
 
