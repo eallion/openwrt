@@ -10,6 +10,10 @@ Build OpenWrt using GitHub Actions
 
 <https://github.com/eallion/openwrt/releases/latest/download/openwrt-x86-64-generic-squashfs-combined.img.gz>
 
+### Check sha256sums
+
+<https://github.com/eallion/openwrt/releases/latest/download/sha256sums>
+
 ### Usage
 
 - [Fork this Repo](https://github.com/eallion/openwrt) or Click the [Use this template](https://github.com/P3TERX/Actions-OpenWrt/generate) button to create a new repository.
