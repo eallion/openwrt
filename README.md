@@ -60,7 +60,9 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-minidlna	
 - luci-app-netdata	
 - luci-app-nlbwmon	
+- [luci-app-openclash](https://github.com/vernesong/OpenClash.git)
 - luci-app-p910nd	
+- [luci-app-passwall](https://github.com/Lienol/openwrt-package)
 - luci-app-qbittorrent	
 - luci-app-ramfree	
 - luci-app-samba	
@@ -75,6 +77,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-vsftpd	
 - luci-app-wireguard	
 - luci-app-wol	
+- [luci-app-wrtbwmon](https://github.com/brvphoenix/luci-app-wrtbwmon.git)
 - luci-app-xlnetacc
 - ……
 
