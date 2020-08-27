@@ -26,15 +26,15 @@ git clone https://github.com/tty228/luci-app-serverchan.git package/lean/luci-ap
 # git subtree add --prefix=package/lean/luci-app-serverchan https://github.com/tty228/luci-app-serverchan.git master
 
 # Add openclash
-git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
+git clone https://github.com/vernesong/OpenClash.git -b master
 cd OpenClash
+rm -rf ../package/lean/luci-app-openclash
 mv luci-app-openclash ../package/lean/luci-app-openclash
 cd ..
-rm -rf OpenClash
 
 # Change wrtbwmon
-git clone --single-branch --branch master  https://github.com/brvphoenix/luci-app-wrtbwmon.git
+git clone https://github.com/brvphoenix/luci-app-wrtbwmon.git -b master
 cd luci-app-wrtbwmon
+rm -rf ../package/lean/luci-app-wrtbwmon
 mv luci-app-wrtbwmon ../package/lean/luci-app-wrtbwmon
 cd ..
-rm -rf luci-app-wrtbwmon
