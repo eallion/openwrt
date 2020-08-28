@@ -33,8 +33,8 @@ mv luci-app-openclash ../package/lean/luci-app-openclash
 cd ..
 
 # Change wrtbwmon
-git clone https://github.com/brvphoenix/luci-app-wrtbwmon.git -b master
-cd luci-app-wrtbwmon
-rm -rf ../package/lean/luci-app-wrtbwmon
-mv luci-app-wrtbwmon ../package/lean/luci-app-wrtbwmon
-cd ..
+# git clone https://github.com/brvphoenix/luci-app-wrtbwmon.git -b master
+# cd luci-app-wrtbwmon
+# rm -rf ../package/lean/luci-app-wrtbwmon
+# mv luci-app-wrtbwmon ../package/lean/luci-app-wrtbwmon
+# cd ..
