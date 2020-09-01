@@ -69,9 +69,10 @@ cd ..
 cd ../..
 rm -rf ./tmp && rm -rf .config
 # git clone https://github.com/eallion/openwrt.git
-git submodule add -b master https://github.com/eallion/openwrt.git openwrt
+git submodule add -b main https://github.com/eallion/openwrt.git openwrt
 cd openwrt
 cp .config ../.config
+cp update_app.sh ../update_app.sh
 rm -rf openwrt
 
 echo "=============================="
