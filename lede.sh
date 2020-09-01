@@ -28,25 +28,30 @@ mkdir -p package/chin
 cd package/chin
 
 # Add aliddns
-git clone https://github.com/chenhw2/luci-app-aliddns.git -b master
+# git clone https://github.com/chenhw2/luci-app-aliddns.git -b master
+git submodule add -b master https://github.com/chenhw2/luci-app-aliddns.git luci-app-aliddns
 rm -rf ../lean/luci-app-aliddns
 cp -r luci-app-aliddns ../lean/luci-app-aliddns
 
 # Add JD dailybonus
-git clone https://github.com/jerrykuku/node-request.git -b master
-git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git -b master
+# git clone https://github.com/jerrykuku/node-request.git -b master
+# git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git -b master
+git submodule add -b master https://github.com/jerrykuku/node-request.git node-request
+git submodule add -b master https://github.com/jerrykuku/luci-app-jd-dailybonus.git luci-app-jd-dailybonus
 rm -rf ../lean/node-request
 cp -r node-request ../lean/node-request
 rm -rf ../lean/luci-app-jd-dailybonus
 cp -r luci-app-jd-dailybonus ../lean/luci-app-jd-dailybonus
 
 # Add serverchan
-git clone https://github.com/tty228/luci-app-serverchan.git -b master
+# git clone https://github.com/tty228/luci-app-serverchan.git -b master
+git submodule add -b master https://github.com/tty228/luci-app-serverchan.git luci-app-serverchan
 rm -rf ../lean/luci-app-serverchan
 cp -r luci-app-serverchan ../lean/luci-app-serverchan
 
 # Add openclash
-git clone https://github.com/vernesong/OpenClash.git -b master
+# git clone https://github.com/vernesong/OpenClash.git -b master
+git submodule add -b master https://github.com/vernesong/OpenClash.git OpenClash
 cd OpenClash
 rm -rf ../lean/luci-app-openclash
 cp -r luci-app-openclash ../../lean/luci-app-openclash
@@ -54,6 +59,7 @@ cd ..
 
 # Change wrtbwmon
 # git clone https://github.com/brvphoenix/luci-app-wrtbwmon.git -b master
+# git submodule add -b master https://github.com/brvphoenix/luci-app-wrtbwmon.git luci-app-wrtbwmon
 # cd luci-app-wrtbwmon
 # rm -rf ../package/lean/luci-app-wrtbwmon
 # cp -r luci-app-wrtbwmon ../../lean/luci-app-wrtbwmon
@@ -62,7 +68,8 @@ cd ..
 # Download config
 cd ../..
 rm -rf ./tmp && rm -rf .config
-git clone https://github.com/eallion/openwrt.git
+# git clone https://github.com/eallion/openwrt.git
+git submodule add -b master https://github.com/eallion/openwrt.git openwrt
 cd openwrt
 cp .config ../.config
 rm -rf openwrt
