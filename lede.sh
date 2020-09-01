@@ -57,14 +57,6 @@ rm -rf ../lean/luci-app-openclash
 cp -r luci-app-openclash ../../lean/luci-app-openclash
 cd ..
 
-# Change wrtbwmon
-# git clone https://github.com/brvphoenix/luci-app-wrtbwmon.git -b master
-# git submodule add -b master https://github.com/brvphoenix/luci-app-wrtbwmon.git luci-app-wrtbwmon
-# cd luci-app-wrtbwmon
-# rm -rf ../package/lean/luci-app-wrtbwmon
-# cp -r luci-app-wrtbwmon ../../lean/luci-app-wrtbwmon
-# cd ..
-
 # Download config
 cd ../..
 rm -rf ./tmp && rm -rf .config

@@ -6,23 +6,19 @@
 git submodule update
 
 # Update aliddns
-rm -rf ../lean/luci-app-aliddns
-cp -r luci-app-aliddns ../lean/luci-app-aliddns
+rm -rf package/lean/luci-app-aliddns
+cp -r package/chin/luci-app-aliddns package/lean/luci-app-aliddns
 
 # Update JD dailybonus
-rm -rf ../lean/node-request
-cp -r node-request ../lean/node-request 
-rm -rf ../lean/luci-app-jd-dailybonus
-cp -r luci-app-jd-dailybonus ../lean/luci-app-jd-dailybonus
+rm -rf package/lean/node-request
+cp -r package/chin/node-request package/lean/node-request 
+rm -rf package/lean/luci-app-jd-dailybonus
+cp -r package/chin/luci-app-jd-dailybonus package/lean/luci-app-jd-dailybonus
 
 # Update serverchan
-rm -rf ../lean/luci-app-serverchan
-cp -r luci-app-serverchan ../lean/luci-app-serverchan
+rm -rf package/lean/luci-app-serverchan
+cp -r package/chin/luci-app-serverchan package/lean/luci-app-serverchan
 
 # Update openclash
-rm -rf ../lean/luci-app-openclash
-cp -r OpenClash/luci-app-openclash ../lean/luci-app-openclash
-
-# Update wrtbwmon
-rm -rf ../lean/luci-app-wrtbwmon
-cp -r luci-app-wrtbwmon/luci-app-wrtbwmon ../lean/luci-app-wrtbwmon
+rm -rf package/lean/luci-app-openclash
+cp -r package/chin/OpenClash/luci-app-openclash package/lean/luci-app-openclash
