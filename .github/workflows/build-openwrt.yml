@@ -153,6 +153,7 @@ jobs:
         file: openwrt/bin/targets/x86/64/*
 #        asset_name: Openwrt-x86-64-${{ env.FILE_DATE }}.tar
         tag: ${{ env.FILE_DATE }}
+        release_name: OpenWrt_x86-64_${{ env.FILE_DATE }}
         overwrite: true
         file_glob: true
         body: "Openwrt x86-64 generic squashfs combined image"
