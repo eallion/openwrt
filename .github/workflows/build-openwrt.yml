@@ -185,6 +185,6 @@ jobs:
       with: 
         repo: eallion/openwrt # defaults to current repo
         keep_latest: 7
-        INPUT_DELETE_TAGS: true
+        delete_tags: true
       env: 
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
