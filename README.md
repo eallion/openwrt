@@ -45,7 +45,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 
 ##### 4. Luci apps
 - luci-app-accesscontrol	
-- luci-app-adbyby-plus	
+- ~~luci-app-adbyby-plus~~
 - luci-app-arpbind	
 - luci-app-baidupcs-web	
 - luci-app-ddns	
@@ -60,9 +60,9 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-minidlna	
 - luci-app-netdata	
 - luci-app-nlbwmon	
-- [luci-app-openclash](https://github.com/vernesong/OpenClash.git)
+- ~~[luci-app-openclash](https://github.com/vernesong/OpenClash.git)~~
 - luci-app-p910nd	
-- [luci-app-passwall](https://github.com/Lienol/openwrt-package)
+- ~~[luci-app-passwall](https://github.com/Lienol/openwrt-package)~~
 - luci-app-qbittorrent	
 - luci-app-ramfree	
 - luci-app-samba	
@@ -70,14 +70,14 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-sfe	
 - luci-app-sqm	
 - luci-app-ssr-plus	
-- luci-app-unblockmusic	
+- ~~luci-app-unblockmusic~~
 - luci-app-upnp	
 - luci-app-usb-printer	
 - luci-app-vlmcsd	
 - luci-app-vsftpd	
-- luci-app-wireguard	
-- luci-app-wol	
-- [luci-app-wrtbwmon](https://github.com/brvphoenix/luci-app-wrtbwmon.git)
+- ~~luci-app-wireguard~~	
+- ~~luci-app-wol~~	
+- ~~[luci-app-wrtbwmon](https://github.com/brvphoenix/luci-app-wrtbwmon.git)~~
 - luci-app-xlnetacc
 - ……
 
