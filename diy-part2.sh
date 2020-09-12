@@ -26,7 +26,7 @@ git clone https://github.com/tty228/luci-app-serverchan.git package/lean/luci-ap
 # git subtree add --prefix=package/lean/luci-app-serverchan https://github.com/tty228/luci-app-serverchan.git master
 
 # Add AdGuardHome
-git clone https://github.com/rufengsuixing/luci-app-adguardhome.git lpackage/lean/uci-app-adguardhome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git package/lean/luci-app-adguardhome
 
 # Add autoipsetadder
 git clone https://github.com/rufengsuixing/luci-app-autoipsetadder.git package/lean/luci-app-autoipsetadder
