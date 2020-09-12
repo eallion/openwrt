@@ -49,6 +49,16 @@ git submodule add -b master https://github.com/tty228/luci-app-serverchan.git lu
 rm -rf ../lean/luci-app-serverchan
 cp -r luci-app-serverchan ../lean/luci-app-serverchan
 
+# Add AdGuardHome
+git submodule add -b master https://github.com/rufengsuixing/luci-app-adguardhome.git luci-app-adguardhome
+rm -rf ../lean/luci-app-adguardhome
+cp -r luci-app-adguardhome ../lean/luci-app-adguardhome
+
+# Add autoipsetadder
+git submodule add -b master https://github.com/rufengsuixing/luci-app-autoipsetadder.git luci-app-autoipsetadder
+rm -rf ../lean/luci-app-autoipsetadder
+cp -r luci-app-autoipsetadder ../lean/luci-app-autoipsetadder
+
 # Add openclash
 # git clone https://github.com/vernesong/OpenClash.git -b master
 git submodule add -b master https://github.com/vernesong/OpenClash.git OpenClash

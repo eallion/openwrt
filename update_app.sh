@@ -19,6 +19,14 @@ cp -r package/chin/luci-app-jd-dailybonus package/lean/luci-app-jd-dailybonus
 rm -rf package/lean/luci-app-serverchan
 cp -r package/chin/luci-app-serverchan package/lean/luci-app-serverchan
 
+# Update AdGuardHome
+rm -rf package/lean/uci-app-adguardhome
+cp -r package/chin/uci-app-adguardhome package/lean/uci-app-adguardhome
+
+# Update autoipsetadder
+rm -rf package/lean/luci-app-autoipsetadder
+cp -r package/chin/luci-app-autoipsetadder package/lean/luci-app-autoipsetadder
+
 # Update openclash
 rm -rf package/lean/luci-app-openclash
 cp -r package/chin/OpenClash/luci-app-openclash package/lean/luci-app-openclash

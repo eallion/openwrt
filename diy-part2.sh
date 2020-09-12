@@ -25,6 +25,12 @@ git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/lean/l
 git clone https://github.com/tty228/luci-app-serverchan.git package/lean/luci-app-serverchan
 # git subtree add --prefix=package/lean/luci-app-serverchan https://github.com/tty228/luci-app-serverchan.git master
 
+# Add AdGuardHome
+git clone https://github.com/rufengsuixing/luci-app-adguardhome.git lpackage/lean/uci-app-adguardhome
+
+# Add autoipsetadder
+git clone https://github.com/rufengsuixing/luci-app-autoipsetadder.git package/lean/luci-app-autoipsetadder
+
 # Add openclash
 git clone https://github.com/vernesong/OpenClash.git -b master
 cd OpenClash
