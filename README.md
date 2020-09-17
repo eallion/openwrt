@@ -36,7 +36,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 
 ##### 2. Default IP
 ```
-192.168.0.2
+192.168.0.1
 ```
 
 ##### 3. Image's setting
@@ -49,7 +49,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-arpbind	
 - luci-app-baidupcs-web	
 - luci-app-ddns	
-- luci-app-diskman	
+- ~~luci-app-diskman~~
 - luci-app-docker	
   - docker-compose
 - luci-app-filetransfer	
@@ -65,11 +65,12 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - ~~[luci-app-passwall](https://github.com/Lienol/openwrt-package)~~
 - luci-app-qbittorrent	
 - luci-app-ramfree	
-- luci-app-samba	
+- luci-app-samba4	
 - [luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)
 - luci-app-sfe	
 - luci-app-sqm	
-- luci-app-ssr-plus	
+- luci-app-ssr-plus	 
+- luci-app-ttyd
 - ~~luci-app-unblockmusic~~
 - luci-app-upnp	
 - luci-app-usb-printer	
