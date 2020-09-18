@@ -56,7 +56,6 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-firewall	
 - luci-app-hd-idle	
 - [luci-app-jd-dailybonus](https://github.com/jerrykuku/luci-app-jd-dailybonus.git)
-  - [node-request](https://github.com/jerrykuku/node-request.git)
 - luci-app-minidlna	
 - luci-app-netdata	
 - luci-app-nlbwmon	

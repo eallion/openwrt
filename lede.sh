@@ -18,7 +18,7 @@ sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.0.2/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 
 # Install feeds
 ./scripts/feeds update -a && ./scripts/feeds install -a
@@ -36,7 +36,7 @@ cp -r luci-app-aliddns ../lean/luci-app-aliddns
 # Add JD dailybonus
 # git clone https://github.com/jerrykuku/node-request.git -b master
 # git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git -b master
-git submodule add -b master https://github.com/jerrykuku/node-request.git node-request
+# git submodule add -b master https://github.com/jerrykuku/node-request.git node-request
 git submodule add -b master https://github.com/jerrykuku/luci-app-jd-dailybonus.git luci-app-jd-dailybonus
 rm -rf ../lean/node-request
 cp -r node-request ../lean/node-request

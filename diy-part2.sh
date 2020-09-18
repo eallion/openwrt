@@ -16,7 +16,7 @@ git clone https://github.com/chenhw2/luci-app-aliddns.git package/lean/luci-app-
 # git clone package/lean/luci-app-aliddns https://github.com/chenhw2/luci-app-aliddns.git master
 
 # Add JD dailybonus
-git clone https://github.com/jerrykuku/node-request.git package/lean/node-request
+# git clone https://github.com/jerrykuku/node-request.git package/lean/node-request
 git clone https://github.com/jerrykuku/luci-app-jd-dailybonus.git package/lean/luci-app-jd-dailybonus
 # git subtree add --prefix=package/lean/node-request https://github.com/jerrykuku/node-request.git master
 # git subtree add --prefix=package/lean/luci-app-jd-dailybonus https://github.com/jerrykuku/luci-app-jd-dailybonus.git master
