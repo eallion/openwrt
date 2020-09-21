@@ -8,11 +8,11 @@ Build OpenWrt using GitHub Actions
 
 ### Download
 
-<https://github.com/eallion/openwrt/releases/latest/download/openwrt-x86-64-generic-squashfs-combined.img.gz>
+[Releases](https://github.com/eallion/openwrt/releases/latest/download/openwrt-x86-64-generic-squashfs-combined.img.gz)
 
 ### Check sha256sums
 
-<https://github.com/eallion/openwrt/releases/latest/download/sha256sums>
+[sha256sums](https://github.com/eallion/openwrt/releases/latest/download/sha256sums)
 
 ### Usage
 
