@@ -47,24 +47,24 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-accesscontrol	
 - ~~luci-app-adbyby-plus~~
 - luci-app-arpbind	
-- luci-app-baidupcs-web	
+- ~~luci-app-baidupcs-web~~
 - luci-app-ddns	
-- ~~luci-app-diskman~~
-- luci-app-docker	
-  - docker-compose
+- luci-app-diskman
+- ~~luci-app-docker~~
+  - ~~docker-compose~~
 - luci-app-filetransfer	
 - luci-app-firewall	
 - luci-app-hd-idle	
-- [luci-app-jd-dailybonus](https://github.com/jerrykuku/luci-app-jd-dailybonus.git)
-- luci-app-minidlna	
-- luci-app-netdata	
+- ~~[luci-app-jd-dailybonus](https://github.com/jerrykuku/luci-app-jd-dailybonus.git)~~
+- ~~luci-app-minidlna~~
+- ~~luci-app-netdata~~
 - luci-app-nlbwmon	
-- ~~[luci-app-openclash](https://github.com/vernesong/OpenClash.git)~~
-- luci-app-p910nd	
+- [luci-app-openclash](https://github.com/vernesong/OpenClash.git)
+- ~~luci-app-p910nd~~
 - ~~[luci-app-passwall](https://github.com/Lienol/openwrt-package)~~
 - luci-app-qbittorrent	
 - luci-app-ramfree	
-- luci-app-samba4	
+- luci-app-samba
 - [luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)
 - luci-app-sfe	
 - luci-app-sqm	
@@ -72,7 +72,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-ttyd
 - ~~luci-app-unblockmusic~~
 - luci-app-upnp	
-- luci-app-usb-printer	
+- ~~luci-app-usb-printer~~
 - luci-app-vlmcsd	
 - luci-app-vsftpd	
 - ~~luci-app-wireguard~~	
