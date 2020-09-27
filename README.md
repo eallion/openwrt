@@ -41,7 +41,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 
 ##### 3. Image's setting
 - GZip images	
-- Set 320MB root filesystem partigion size
+- Set 160MB root filesystem partigion size
 
 ##### 4. Luci apps
 - luci-app-accesscontrol	
