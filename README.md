@@ -65,7 +65,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - luci-app-qbittorrent	
 - luci-app-ramfree	
 - luci-app-samba
-- [luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)
+- ~~[luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)~~
 - luci-app-sfe	
 - luci-app-sqm	
 - luci-app-ssr-plus	 
