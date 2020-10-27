@@ -8,11 +8,11 @@ Build OpenWrt using GitHub Actions
 
 ### Download
 
-- [Releases](https://github.com/eallion/openwrt/releases/latest/download/openwrt-x86-64-generic-squashfs-combined.img.gz)
+- [Releases](https://github.com/eallion/openwrt/releases/latest/)
 
 ### Check sha256sums
 
-- [sha256sums](https://github.com/eallion/openwrt/releases/latest/download/sha256sums)
+- [sha256sums](https://github.com/eallion/openwrt/releases/latest/)
 
 ### Usage
 
@@ -27,11 +27,44 @@ It may take a long time to create a `.config` file and build the OpenWrt firmwar
 
 Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
 
+### Genarate `.config`
+On Ubuntu \ Debian \ WSL ...
+```
+git clone https://github.com/eallion/openwrt.git
+cd openwrt
+./lede.sh
+cd ../lede
+```
+Make on local:
+```
+make -j8 download V=s
+make -j$(($(nproc) + 1)) V=s
+```
+Regenarate `.config`
+```
+rm -rf ./tmp && rm -rf .config
+```
+```
+make menuconfig
+```
+Remake on local or:
+Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make on GitHub Actions
+```
+rm ../openwrt/.config
+cp .config ../openwrt/
+cd ../openwrt
+git add .
+git commit -m "message"
+git push
+```
+Then you can download firmware at [Releases](https://github.com/eallion/openwrt/releases/latest/) later.
+
 ### Customs
 
 ##### 1. Add [lienol's packages](https://github.com/Lienol/openwrt-package)
+Uncommnet `#src-git` to use
 ```
-sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+sed -i '$a #src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 ```
 
 ##### 2. Default IP
@@ -45,7 +78,7 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 
 ##### 4. Luci apps
 - luci-app-accesscontrol	
-- ~~luci-app-adbyby-plus~~
+- luci-app-adbyby-plus
 - luci-app-arpbind	
 - ~~luci-app-baidupcs-web~~
 - luci-app-ddns	
@@ -86,6 +119,11 @@ sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.
 - Enable openssh-sftp-server
 - Enable curl and wget
 - Enable drill for DDNS
+- Enable Docker & Docker Compose
+- Enable JD daily bonus
+- Enable ServerChan
+- Enable OpenClash
+- ......
 
 ### Acknowledgments
 

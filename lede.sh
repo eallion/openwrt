@@ -3,8 +3,11 @@
 # https://github.com/eallion/openwrt
 #=============================================================
 
+# workspace
+lede_path=$(dirname $(readlink -f $0))
+
 # Clone Lean's lede
-cd ~/Documents/
+cd $lede_path/../
 if [ ! -d "lede" ]; then
     sudo apt-get update
     sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget swig rsync
@@ -19,8 +22,6 @@ else
     git pull
     git submodule update
 fi
-
-cd ~/Documents/lede
 
 # Uncomment a feed source
 sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
@@ -87,14 +88,9 @@ fi
     cd ..
 
 # Download config
-cd ~/Documents/lede
+cd $lede_path/../lede
 rm -rf ./tmp && rm -rf .config
-if [ ! -d "openwrt" ]; then
-    git submodule add -b main https://github.com/eallion/openwrt.git openwrt
-else
-    git submodule update
-fi
-cp openwrt/.config .config
+cp $lede_path/.config ./.config
 echo " "
 echo " "
 echo "======================================"
