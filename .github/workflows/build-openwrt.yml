@@ -179,6 +179,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
       with:
+        name: OpenWrt_x86-64-${{ steps.tag.outputs.release_tag }}
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
