@@ -4,7 +4,7 @@
 #=============================================================
 
 # workspace
-lede_path=$(dirname $(readlink -f $0))
+lede_path"~/Documents/lede"
 
 # Clone Lean's lede
 cd ~
