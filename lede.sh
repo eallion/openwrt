@@ -4,7 +4,7 @@
 #=============================================================
 
 # workspace
-lede_path"~/Documents/lede"
+lede_path="~/Documents/lede"
 
 # Clone Lean's lede
 cd ~
