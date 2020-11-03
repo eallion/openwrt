@@ -13,6 +13,9 @@ Build OpenWrt using GitHub Actions
 ### Check sha256sums
 
 - [sha256sums](https://github.com/eallion/openwrt/releases/latest/)
+```
+sha256sum -c sha256sums --ignore-missing 
+```
 
 ### Usage
 
