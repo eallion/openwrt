@@ -12,3 +12,5 @@ RUN \
     ./scripts/feeds update -a && \
     ./scripts/feeds install -a && \
     wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config
+
+CMD ["/bin/bash"]
