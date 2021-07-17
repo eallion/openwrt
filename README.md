@@ -10,12 +10,25 @@ Build OpenWrt using GitHub Actions
 
 - [Releases](https://github.com/eallion/openwrt/releases/latest/)
 
+This repo only keeps the lastest 5 releases.
+
 ### Check sha256sums
 
-- [sha256sums](https://github.com/eallion/openwrt/releases/latest/)
-```
+Download the [sha256sums](https://github.com/eallion/openwrt/releases/latest/) file.
+
+Make sure the sha256sums file and img file in a same folder.
+
+```shell
 sha256sum -c sha256sums --ignore-missing 
 ```
+
+Windows(git bash)
+
+```shell
+sha256sum.exe -c sha256sums --ignore-missing 
+```
+
+Make sure its `OK` before upload it.
 
 ### Usage
 
@@ -30,29 +43,36 @@ It may take a long time to create a `.config` file and build the OpenWrt firmwar
 
 Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
 
-### Genarate `.config`
-On Ubuntu \ Debian \ WSL ...
+### Download`.config`
+
+On Ubuntu / Debian / WSL ...
+
+```shell
+wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config ~/lede/.config
 ```
+
+// or 
+
+```shell
 git clone https://github.com/eallion/openwrt.git
 cd openwrt
-./lede.sh
-cd ../lede
+cp .config ~/lede/.config # copy config to lede folder.
 ```
 Make on local:
-```
+```shell
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
 Regenarate `.config`
-```
+```shell
 rm -rf ./tmp && rm -rf .config
 ```
-```
+```shell
 make menuconfig
 ```
 Remake on local or:
 Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make on GitHub Actions
-```
+```shell
 rm ../openwrt/.config
 cp .config ../openwrt/
 cd ../openwrt
@@ -64,58 +84,38 @@ Then you can download firmware at [Releases](https://github.com/eallion/openwrt/
 
 ### Customs
 
-##### 1. Add [lienol's packages](https://github.com/Lienol/openwrt-package)
+##### 1. Add [@fw876/helloworld](https://github.com/fw876/helloworld)
+
 Uncommnet `#src-git` to use
+```shell
+echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
 ```
-sed -i '$a #src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+
+*Option: [@Lienol/openwrt-package](https://github.com/Lienol/openwrt-package)
+
+```
+sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 ```
 
 ##### 2. Default IP
-```
-192.168.0.1
+
+> 192.168.0.1
+
+
+Change default IP:
+
+```shell
+sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 ```
 
 ##### 3. Image's setting
+
 - GZip images	
 - Set 320MB root filesystem partigion size
 
 ##### 4. Luci apps
-- luci-app-accesscontrol	
-- luci-app-adbyby-plus
-- luci-app-arpbind	
-- ~~luci-app-baidupcs-web~~
-- luci-app-ddns	
-- luci-app-diskman
-- ~~luci-app-docker~~
-  - ~~docker-compose~~
-- luci-app-filetransfer	
-- luci-app-firewall	
-- luci-app-hd-idle	
-- ~~[luci-app-jd-dailybonus](https://github.com/jerrykuku/luci-app-jd-dailybonus.git)~~
-- ~~luci-app-minidlna~~
-- ~~luci-app-netdata~~
-- luci-app-nlbwmon	
-- [luci-app-openclash](https://github.com/vernesong/OpenClash.git)
-- ~~luci-app-p910nd~~
-- ~~[luci-app-passwall](https://github.com/Lienol/openwrt-package)~~
-- luci-app-qbittorrent	
-- luci-app-ramfree	
-- luci-app-samba
-- ~~[luci-app-serverchan](https://github.com/tty228/luci-app-serverchan.git)~~
-- luci-app-sfe	
-- luci-app-sqm	
+
 - luci-app-ssr-plus	 
-- luci-app-ttyd
-- ~~luci-app-unblockmusic~~
-- luci-app-upnp	
-- ~~luci-app-usb-printer~~
-- luci-app-uugamebooster
-- luci-app-vlmcsd	
-- luci-app-vsftpd	
-- ~~luci-app-wireguard~~	
-- ~~luci-app-wol~~	
-- ~~[luci-app-wrtbwmon](https://github.com/brvphoenix/luci-app-wrtbwmon.git)~~
-- luci-app-xlnetacc
 - ……
 
 ##### 5. Others
@@ -123,10 +123,10 @@ sed -i '$a #src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf
 - Enable openssh-sftp-server
 - Enable curl and wget
 - Enable drill for DDNS
-- Enable Docker & Docker Compose
-- Enable JD daily bonus
-- Enable ServerChan
-- Enable OpenClash
+- ~~Enable Docker & Docker Compose~~
+- ~~Enable JD daily bonus~~
+- ~~Enable ServerChan~~
+- ~~Enable OpenClash~~
 - ......
 
 ### Acknowledgments
