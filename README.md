@@ -1,4 +1,4 @@
-# Actions-OpenWrt
+# Actions OpenWrt
 
 Build OpenWrt using GitHub Actions
 
@@ -43,46 +43,75 @@ It may take a long time to create a `.config` file and build the OpenWrt firmwar
 
 Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
 
+# Make on local
+
+### OS
+
+I make Openwrt on Ubuntu / Debian / WSL ...
+(Ubuntu 20.04 LTS x86 is recommended)
+
+`sudo apt -y install build-essential asciidoc binutils bzip2 gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync libz-dev git-core upx lib32gcc-s1 libncurses5-dev gawk`
+
+### Clone
+```shell
+cd ~
+git clone https://github.com/coolsnowwolf/lede
+```
+
+### Add [@fw876/helloworld](https://github.com/fw876/helloworld)
+
+```shell
+cd ~/lede
+echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
+```
+
+### Install feeds
+```shell
+./scripts/feeds update -a && ./scripts/feeds install -a
+make menuconfig
+```
+
 ### Download`.config`
 
-On Ubuntu / Debian / WSL ...
-
 ```shell
-wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config ~/lede/.config
+cd ~/lede
+rm .config
+wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config
 ```
 
-// or 
-
-```shell
-git clone https://github.com/eallion/openwrt.git
-cd openwrt
-cp .config ~/lede/.config # copy config to lede folder.
-```
-Make on local:
+### Make:
 ```shell
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
-Regenarate `.config`
+
+### Regenarate `.config`
 ```shell
 rm -rf ./tmp && rm -rf .config
 ```
 ```shell
 make menuconfig
 ```
-Remake on local or:
+Remake on local
+```shell
+make -j8 download V=s
+make -j$(($(nproc) + 1)) V=s
+```
+
+// or:
+
 Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make on GitHub Actions
 ```shell
-rm ../openwrt/.config
-cp .config ../openwrt/
-cd ../openwrt
+rm ~/openwrt/.config
+cp ~/lede/.config ~/openwrt/
+cd ~/openwrt
 git add .
 git commit -m "message"
 git push
 ```
 Then you can download firmware at [Releases](https://github.com/eallion/openwrt/releases/latest/) later.
 
-### Customs
+# Customs
 
 ##### 1. Add [@fw876/helloworld](https://github.com/fw876/helloworld)
 
@@ -94,7 +123,7 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.defa
 *Option: [@Lienol/openwrt-package](https://github.com/Lienol/openwrt-package)
 
 ```
-sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
+# sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 ```
 
 ##### 2. Default IP
