@@ -68,10 +68,19 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.defa
 ### Install feeds
 ```shell
 ./scripts/feeds update -a && ./scripts/feeds install -a
+```
+
+### Change default IP:
+```shell
+sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
+```
+
+### Generate config
+```
 make menuconfig
 ```
 
-### Download`.config`
+### (Option) Download`.config`
 
 ```shell
 cd ~/lede
@@ -85,7 +94,7 @@ make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
 
-### Regenarate `.config`
+### Regenerate `.config`
 ```shell
 rm -rf ./tmp && rm -rf .config
 ```
