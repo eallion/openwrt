@@ -199,6 +199,6 @@ jobs:
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 5
-        delete_tags: true
+        delete_tags: false
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
