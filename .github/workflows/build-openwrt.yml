@@ -171,9 +171,10 @@ jobs:
         touch release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        echo "```" >> release.txt
+        echo '```' >> release.txt
         cat ${{ env.FIRMWARE }}/sha256sums >> release.txt
-        echo "```" >> release.txt
+        echo '```' >> release.txt
+        cat release.txt
         echo "::set-output name=status::success"
 
     - name: Upload firmware to release
