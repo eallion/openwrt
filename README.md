@@ -6,6 +6,14 @@ Build OpenWrt using GitHub Actions
 
 [中文教程 | Read the details in P3TERX's blog (in Chinese)](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
+### Source
+
+- https://github.com/coolsnowwolf/lede
+- https://github.com/openwrt/openwrt
+- https://github.com/fw876/helloworld
+- https://github.com/Lienol/openwrt-package
+- https://github.com/immortalwrt/immortalwrt
+
 ### Download
 
 - [Releases](https://github.com/eallion/openwrt/releases/latest/)
@@ -22,10 +30,10 @@ Make sure the sha256sums file and img file in a same folder.
 sha256sum -c sha256sums --ignore-missing 
 ```
 
-Windows(git bash)
+or
 
 ```shell
-sha256sum.exe -c sha256sums --ignore-missing 
+echo "bf69a9ae42825a76c449699f393b8aa35216f3ffef428ae851d76ce4386bd3c3 *openwrt-x86-64-generic-squashfs-combined.img.gz" | shasum -a 256 --check
 ```
 
 Make sure its `OK` before upload it.
@@ -50,9 +58,12 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 I make Openwrt on Ubuntu / Debian / WSL ...
 (Ubuntu 20.04 LTS x86 is recommended)
 
-`sudo apt -y install build-essential asciidoc binutils bzip2 gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync libz-dev git-core upx lib32gcc-s1 libncurses5-dev gawk`
+```shell
+sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
+```
 
 ### Clone
+
 ```shell
 cd ~
 git clone https://github.com/coolsnowwolf/lede
