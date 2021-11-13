@@ -176,7 +176,7 @@ jobs:
         echo '```' >> release.txt
         echo "💡 Tips: how to check shasums" >> release.txt
         echo '```shell' >> release.txt
-        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined.img.gz'`"
+        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined.img'`"
         echo "echo \"$sha_tmp\" | shasum -a 256 --check" >> release.txt
         echo '```' >> release.txt
         cat release.txt
