@@ -159,8 +159,8 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 
 ##### 3. Image's setting
 
-- GZip images	
-- Set 320MB root filesystem partigion size
+- Set 160MB root filesystem partigion size
+- ~~GZip images~~	
 
 ##### 4. Luci apps
 
@@ -168,13 +168,12 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 - ……
 
 ##### 5. Others
+
 - Enable Nginx for luci and web service
 - Enable openssh-sftp-server
 - Enable curl and wget
 - Enable drill for DDNS
 - ~~Enable Docker & Docker Compose~~
-- ~~Enable JD daily bonus~~
-- ~~Enable ServerChan~~
 - ~~Enable OpenClash~~
 - ......
 
