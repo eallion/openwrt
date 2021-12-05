@@ -49,7 +49,9 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
-      fetch-depth: 0
+      with:
+#       ref: master
+        fetch-depth: 0
 
     - name: Initialization environment
       env:
