@@ -114,6 +114,8 @@ jobs:
         cd openwrt
         echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
         make defconfig
+        wget https://github.com/coolsnowwolf/lede/pull/6526.patch
+        git apply 6526.patch
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
