@@ -16,3 +16,6 @@ git clone --single-branch --branch master https://github.com/vernesong/OpenClash
 cd OpenClash
 mv luci-app-openclash ../package/lean/luci-app-openclash
 cd ..
+
+# Add luci-theme-neobird
+git clone https://github.com/thinktip/luci-theme-neobird.git package/lean/luci-theme-neobird
