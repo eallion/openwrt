@@ -40,6 +40,7 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
+  PUSHPLUS_TOKEN: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -205,6 +206,11 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+
+    - name: PUSH PLUS
+      if: steps.tag.outputs.status == 'success' && env.PUSHPLUS_TOKEN == 'true'
+      run: |
+        curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="Build ImmotalWrt Success" --data "content=您的 ImmotalWrt 已顺利编译完成了！💐"  "http://www.pushplus.plus/send"
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
