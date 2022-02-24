@@ -37,9 +37,10 @@ env:
   DIY_P2_SH: diy-part4.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: true
+  UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: true
-  UPLOAD_WENSHUSHU: true
+  UPLOAD_WENSHUSHU: false
+  UPLOAD_TMP: true
   UPLOAD_RELEASE: true
   PUSHPLUS_TOKEN: true
   TZ: Asia/Shanghai
@@ -160,7 +161,7 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Upload firmware to cowtransfer
+    - name: Upload firmware to CowTransfer
       id: cowtransfer
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
       run: |
@@ -176,6 +177,7 @@ jobs:
         curl -fsSL git.io/file-transfer | sh
         ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
         echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
+        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
 
     - name: Upload firmware to WenShuShu
       id: wenshushu
@@ -186,6 +188,14 @@ jobs:
         echo "::warning file=wenshushu.cn::$(cat wenshushu.log | grep wss1)"
         echo "::set-output name=url::$(cat wenshushu.log | grep wss1 | cut -f3 -d" ")"
 
+    - name: Upload firmware to TMP.LINK
+      id: tmplink
+      if: steps.organize.outputs.status == 'success' && env.UPLOAD_TMP == 'true' && !cancelled()
+      run: |
+        curl -k -F "file=@${FIRMWARE}/immortalwrt-x86-64-generic-squashfs-combined.img" -F "token=${{ secrets.TMP_TOKEN }}" -F "model=2"  -X POST "https://connect.tmp.link/api_v2/cli_uploader" 2>&1 | tee tmplink.log
+        echo "::warning file=tmp.link::$(cat tmplink.log | grep tmp)"
+        echo "::set-output name=url::$(cat tmplink.log | grep tmp | cut -f3 -d" ")"
+
     - name: Generate release tag
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
@@ -193,11 +203,13 @@ jobs:
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
         echo "Download ImmortalWrt:" >> release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 Cowtransfer [${{ steps.cowtransfer.outputs.url }}](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 WeTransfer [${{ steps.wetransfer.outputs.url }}](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WENSHUSHU = true ] && echo "🔗 WenShuShu [${{ steps.wenshushu.outputs.url }}](${{ steps.wenshushu.outputs.url }})" >> release.txt
+        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 Cowtransfer: [${{ steps.cowtransfer.outputs.url }}](${{ steps.cowtransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 WeTransfer: [${{ steps.wetransfer.outputs.url }}](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WENSHUSHU = true ] && echo "🔗 WenShuShu: [${{ steps.wenshushu.outputs.url }}](${{ steps.wenshushu.outputs.url }})" >> release.txt
+        [ $UPLOAD_TMP = true ] && echo "🔗 TMP.link: [${{ steps.tmplink.outputs.url }}](${{ steps.tmplink.outputs.url }})" >> release.txt
         echo '```' >> release.txt
         cat ${{ env.FIRMWARE }}/sha256sums >> release.txt
+        sed -i '/rootfs/d' release.txt
         echo '```' >> release.txt
         echo "💡 Tips: how to check shasums" >> release.txt
         echo '```shell' >> release.txt
