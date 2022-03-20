@@ -195,7 +195,7 @@ jobs:
       id: tmplink
       if: steps.organize.outputs.status == 'success' && env.UPLOAD_TMP == 'true' && !cancelled()
       run: |
-        curl -k -F "file=@${FIRMWARE}/immortalwrt-x86-64-generic-squashfs-combined.img" -F "token=${{ secrets.TMP_TOKEN }}" -F "model=2"  -X POST "https://connect.tmp.link/api_v2/cli_uploader" 2>&1 | tee tmplink.log
+        curl -k -F "file=@${FIRMWARE}/immortalwrt-x86-64-generic-squashfs-combined.img.gz" -F "token=${{ secrets.TMP_TOKEN }}" -F "model=2"  -X POST "https://connect.tmp.link/api_v2/cli_uploader" 2>&1 | tee tmplink.log
         echo "::warning file=tmp.link::$(cat tmplink.log | grep tmp)"
         echo "::set-output name=url::$(cat tmplink.log | grep tmp | cut -f3 -d" ")"
 
