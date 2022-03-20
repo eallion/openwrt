@@ -80,8 +80,8 @@ jobs:
     - name: Cache
       uses: klever1988/cachewrtbuild@main
       with:
-        ccache: 'false'
-        toolchain: 'false'
+        ccache: 'true'
+        toolchain: 'true'
         prefix: ${{ github.workspace }}/openwrt
 
     - name: Load custom feeds
@@ -116,7 +116,7 @@ jobs:
       id: package
       run: |
         cd openwrt
-        #echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
+        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
@@ -150,7 +150,9 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -rf immortalwrt-x86-64-generic-squashfs-rootfs.img
+        rm -rf immortalwrt-x86-64-generic-squashfs-rootfs.img.gz
+        rm -rf immortalwrt-x86-64-generic-rootfs.tar.gz
+        rm -rf immortalwrt-x86-64-generic-kernel.bin
         sed -i '/openwrt-x86-64-generic-squashfs-rootfs/d' sha256sums
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
         echo "::set-output name=status::success"
@@ -211,6 +213,7 @@ jobs:
         echo '```' >> release.txt
         cat ${{ env.FIRMWARE }}/sha256sums >> release.txt
         sed -i '/rootfs/d' release.txt
+        sed -i '/kernel/d' release.txt
         echo '```' >> release.txt
         echo "💡 Tips: how to check shasums" >> release.txt
         echo '```shell' >> release.txt
