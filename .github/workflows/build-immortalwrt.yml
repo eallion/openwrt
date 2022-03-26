@@ -40,7 +40,7 @@ env:
   UPLOAD_COWTRANSFER: false
   UPLOAD_WETRANSFER: true
   UPLOAD_WENSHUSHU: false
-  UPLOAD_TMP: true
+  UPLOAD_TMP: false
   UPLOAD_RELEASE: true
   PUSHPLUS_TOKEN: true
   TZ: Asia/Shanghai
