@@ -12,7 +12,7 @@ Build OpenWrt using GitHub Actions
 - https://github.com/openwrt/openwrt
 - https://github.com/fw876/helloworld
 - https://github.com/Lienol/openwrt-package
-- https://github.com/immortalwrt/immortalwrt
+- [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-18.06)
 
 ### Download
 
