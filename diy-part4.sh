@@ -18,7 +18,7 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 #cd ..
 
 # Add luci-theme-neobird
-git clone https://github.com/thinktip/luci-theme-neobird.git package/luci-theme-neobird
+#git clone https://github.com/thinktip/luci-theme-neobird.git package/luci-theme-neobird
 
 # Add pushbot
 git clone https://github.com/zzsj0928/luci-app-pushbot package/luci-app-pushbot
