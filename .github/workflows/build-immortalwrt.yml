@@ -77,14 +77,6 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt --depth=1
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: false
-        toolchain: false
-        prefix: ${{ github.workspace }}/openwrt
-        clean: true
-
     - name: Load custom feeds
       run: |
         [ -e $FEEDS_CONF ] && mv $FEEDS_CONF openwrt/feeds.conf.default
@@ -117,7 +109,6 @@ jobs:
       id: package
       run: |
         cd openwrt
-        echo -e 'CONFIG_DEVEL=y\nCONFIG_CCACHE=y' >> .config
         make defconfig
         make download -j8
         find dl -size -1024c -exec ls -l {} \;
