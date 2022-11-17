@@ -13,7 +13,7 @@ name: ImmortalWrt Update Checker
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt
-  REPO_BRANCH: openwrt-18.06
+  REPO_BRANCH: openwrt-21.02
 
 on:
   workflow_dispatch:
