@@ -8,10 +8,10 @@ Build OpenWrt using GitHub Actions
 
 ### Source
 
-- https://github.com/coolsnowwolf/lede
-- https://github.com/openwrt/openwrt
-- https://github.com/fw876/helloworld
-- https://github.com/Lienol/openwrt-package
+- <https://github.com/coolsnowwolf/lede>
+- <https://github.com/openwrt/openwrt>
+- <https://github.com/fw876/helloworld>
+- <https://github.com/Lienol/openwrt-package>
 - [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)
 
 ### Download
@@ -77,16 +77,19 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.defa
 ```
 
 ### Install feeds
+
 ```shell
 ./scripts/feeds update -a && ./scripts/feeds install -a
 ```
 
-### Change default IP:
+### Change default IP
+
 ```shell
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 ```
 
 ### Generate config
+
 ```
 make menuconfig
 ```
@@ -99,20 +102,25 @@ rm .config
 wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config
 ```
 
-### Make:
+### Make
+
 ```shell
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
 
 ### Regenerate `.config`
+
 ```shell
 rm -rf ./tmp && rm -rf .config
 ```
+
 ```shell
 make menuconfig
 ```
+
 Remake on local
+
 ```shell
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
@@ -121,6 +129,7 @@ make -j$(($(nproc) + 1)) V=s
 // or:
 
 Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make on GitHub Actions
+
 ```shell
 rm ~/openwrt/.config
 cp ~/lede/.config ~/openwrt/
@@ -129,6 +138,7 @@ git add .
 git commit -m "message"
 git push
 ```
+
 Then you can download firmware at [Releases](https://github.com/eallion/openwrt/releases/latest/) later.
 
 # Customs
@@ -136,6 +146,7 @@ Then you can download firmware at [Releases](https://github.com/eallion/openwrt/
 ##### 1. Add [@fw876/helloworld](https://github.com/fw876/helloworld)
 
 Uncommnet `#src-git` to use
+
 ```shell
 echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
 ```
@@ -150,7 +161,6 @@ echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.defa
 
 > 192.168.0.1
 
-
 Change default IP:
 
 ```shell
@@ -160,11 +170,11 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 ##### 3. Image's setting
 
 - Set 160MB root filesystem partigion size
-- ~~GZip images~~	
+- ~~GZip images~~ 
 
 ##### 4. Luci apps
 
-- luci-app-ssr-plus	 
+- luci-app-ssr-plus  
 - ……
 
 ##### 5. Others
