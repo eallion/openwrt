@@ -12,7 +12,7 @@ Build OpenWrt using GitHub Actions
 - <https://github.com/openwrt/openwrt>
 - <https://github.com/fw876/helloworld>
 - <https://github.com/Lienol/openwrt-package>
-- [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02)
+- [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05)
 
 ### Download
 
@@ -26,13 +26,13 @@ Download the [sha256sums](https://github.com/eallion/openwrt/releases/latest/) f
 
 Make sure the sha256sums file and img file in a same folder.
 
-```shell
+```bash
 sha256sum -c sha256sums --ignore-missing 
 ```
 
 or
 
-```shell
+```bash
 echo "bf69a9ae42825a76c449699f393b8aa35216f3ffef428ae851d76ce4386bd3c3 *openwrt-x86-64-generic-squashfs-combined.img.gz" | shasum -a 256 --check
 ```
 
@@ -56,36 +56,43 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 ### OS
 
 I make Openwrt on Ubuntu / Debian / WSL ...
-(Ubuntu 20.04 LTS x86 is recommended)
 
-```shell
-sudo apt-get -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch python3 python2.7 unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint device-tree-compiler g++-multilib antlr3 gperf wget curl swig rsync
+```bash
+sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
 ```
 
 ### Clone
 
-```shell
-cd ~
-git clone https://github.com/coolsnowwolf/lede
+```bash
+git clone -b openwrt-23.05 --single-branch --filter=blob:none https://github.com/immortalwrt/immortalwrt
 ```
 
-### Add [@fw876/helloworld](https://github.com/fw876/helloworld)
+### Custom
 
-```shell
-cd ~/lede
-echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
+```bash
+# Modify default IP
+sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
+
+# Add luci-app-alist
+git clone https://github.com/sbwml/luci-app-alist package/alist
+
+# Add luci-app-easymesh
+git clone https://github.com/ntlf9t/luci-app-easymesh package/luci-app-easymesh
+
+# Add luci-app-mosdns
+find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
+find ./ | grep Makefile | grep mosdns | xargs rm -f
+git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
+git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+
+# Add luci-app-pushbot
+git clone https://github.com/zzsj0928/luci-app-pushbot package/luci-app-pushbot
 ```
 
 ### Install feeds
 
-```shell
+```bash
 ./scripts/feeds update -a && ./scripts/feeds install -a
-```
-
-### Change default IP
-
-```shell
-sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 ```
 
 ### Generate config
@@ -96,96 +103,50 @@ make menuconfig
 
 ### (Option) Download`.config`
 
-```shell
-cd ~/lede
+```bash
+cd ~/immortalwrt
 rm .config
-wget -c https://raw.githubusercontent.com/eallion/openwrt/main/.config
+wget -O .config https://raw.githubusercontent.com/eallion/openwrt/main/immortalwrt.config 
 ```
 
 ### Make
 
-```shell
+```bash
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
 
 ### Regenerate `.config`
 
-```shell
+```bash
 rm -rf ./tmp && rm -rf .config
 ```
 
-```shell
+```bash
 make menuconfig
 ```
 
 Remake on local
 
-```shell
+```bash
 make -j8 download V=s
 make -j$(($(nproc) + 1)) V=s
 ```
 
 // or:
 
-Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make on GitHub Actions
+Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make Openwrt on GitHub Actions
 
-```shell
+```bash
 rm ~/openwrt/.config
-cp ~/lede/.config ~/openwrt/
+cp ~/immortalwrt/.config ~/openwrt/
 cd ~/openwrt
 git add .
-git commit -m "message"
+git commit -m "chore: update config"
 git push
 ```
 
 Then you can download firmware at [Releases](https://github.com/eallion/openwrt/releases/latest/) later.
-
-# Customs
-
-##### 1. Add [@fw876/helloworld](https://github.com/fw876/helloworld)
-
-Uncommnet `#src-git` to use
-
-```shell
-echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
-```
-
-*Option: [@Lienol/openwrt-package](https://github.com/Lienol/openwrt-package)
-
-```
-# sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
-```
-
-##### 2. Default IP
-
-> 192.168.0.1
-
-Change default IP:
-
-```shell
-sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
-```
-
-##### 3. Image's setting
-
-- Set 160MB root filesystem partigion size
-- ~~GZip images~~ 
-
-##### 4. Luci apps
-
-- luci-app-ssr-plus  
-- ……
-
-##### 5. Others
-
-- Enable Nginx for luci and web service
-- Enable openssh-sftp-server
-- Enable curl and wget
-- Enable drill for DDNS
-- ~~Enable Docker & Docker Compose~~
-- ~~Enable OpenClash~~
-- ......
 
 ### Acknowledgments
 
