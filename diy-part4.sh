@@ -11,23 +11,17 @@
 # Modify default IP
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 
-# Add openclash
-#git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
-#cd OpenClash
-#mv luci-app-openclash ../package/lean/luci-app-openclash
-#cd ..
-
-# Add luci-theme-neobird
-#git clone https://github.com/thinktip/luci-theme-neobird.git package/luci-theme-neobird
-
-# Add pushbot
-git clone https://github.com/zzsj0928/luci-app-pushbot package/luci-app-pushbot
-
-# Add alist
+# Add luci-app-alist
 git clone https://github.com/sbwml/luci-app-alist package/alist
+
+# Add luci-app-easymesh
+git clone https://github.com/ntlf9t/luci-app-easymesh package/luci-app-easymesh
 
 # Add luci-app-mosdns
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
 find ./ | grep Makefile | grep mosdns | xargs rm -f
 git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
 git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
+
+# Add luci-app-pushbot
+git clone https://github.com/zzsj0928/luci-app-pushbot package/luci-app-pushbot
