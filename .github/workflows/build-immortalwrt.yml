@@ -197,7 +197,7 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
-        echo "Download ImmortalWrt:" >> release.txt
+        echo "💡 Sha256sums:" >> release.txt
         [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 Cowtransfer: [${{ steps.cowtransfer.outputs.url }}](${{ steps.cowtransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WETRANSFER = true ] && echo "🔗 WeTransfer: [${{ steps.wetransfer.outputs.url }}](${{ steps.wetransfer.outputs.url }})" >> release.txt
         [ $UPLOAD_WENSHUSHU = true ] && echo "🔗 WenShuShu: [${{ steps.wenshushu.outputs.url }}](${{ steps.wenshushu.outputs.url }})" >> release.txt
