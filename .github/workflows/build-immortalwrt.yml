@@ -209,7 +209,7 @@ jobs:
         echo '```' >> release.txt
         echo "💡 Tips: how to check shasums" >> release.txt
         echo '```shell' >> release.txt
-        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined.img'`"
+        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'immortalwrt-x86-64-generic-ext4-combined-efi.img'`"
         echo "echo \"$sha_tmp\" | shasum -a 256 --check" >> release.txt
         echo '```' >> release.txt
         cat release.txt
