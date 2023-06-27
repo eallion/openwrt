@@ -12,7 +12,7 @@
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 
 # Add luci-app-alist
-# git clone https://github.com/sbwml/luci-app-alist package/alist
+git clone https://github.com/sbwml/luci-app-alist package/alist
 
 # Add luci-app-easymesh
 git clone https://github.com/ntlf9t/luci-app-easymesh package/luci-app-easymesh
