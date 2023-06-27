@@ -12,10 +12,10 @@
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
 
 # Add openclash
-git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
-cd OpenClash
-mv luci-app-openclash ../package/lean/luci-app-openclash
-cd ..
+#git clone --single-branch --branch master https://github.com/vernesong/OpenClash.git
+#cd OpenClash
+#mv luci-app-openclash ../package/lean/luci-app-openclash
+#cd ..
 
 # Add luci-theme-neobird
-git clone https://github.com/thinktip/luci-theme-neobird.git package/lean/luci-theme-neobird
+#git clone https://github.com/thinktip/luci-theme-neobird.git package/lean/luci-theme-neobird

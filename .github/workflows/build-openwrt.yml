@@ -36,10 +36,11 @@ env:
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: true
-  UPLOAD_WETRANSFER: true
+  UPLOAD_FIRMWARE: false
+  UPLOAD_COWTRANSFER: false
+  UPLOAD_WETRANSFER: false
   UPLOAD_RELEASE: true
+  PUSHPLUS_TOKEN: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -184,14 +185,19 @@ jobs:
       run: |
         echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
         touch release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 [Cowtransfer](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 [WeTransfer](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        echo "💡 Sha256sums:" >> release.txt
+        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 Cowtransfer: [${{ steps.cowtransfer.outputs.url }}](${{ steps.cowtransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 WeTransfer: [${{ steps.wetransfer.outputs.url }}](${{ steps.wetransfer.outputs.url }})" >> release.txt
+        [ $UPLOAD_WENSHUSHU = true ] && echo "🔗 WenShuShu: [${{ steps.wenshushu.outputs.url }}](${{ steps.wenshushu.outputs.url }})" >> release.txt
+        [ $UPLOAD_TMP = true ] && echo "🔗 TMP.link: [${{ steps.tmplink.outputs.url }}](${{ steps.tmplink.outputs.url }})" >> release.txt
         echo '```' >> release.txt
         cat ${{ env.FIRMWARE }}/sha256sums >> release.txt
+        sed -i '/rootfs/d' release.txt
+        sed -i '/kernel/d' release.txt
         echo '```' >> release.txt
         echo "💡 Tips: how to check shasums" >> release.txt
         echo '```shell' >> release.txt
-        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined.img'`"
+        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'immortalwrt-x86-64-generic-ext4-combined-efi.img'`"
         echo "echo \"$sha_tmp\" | shasum -a 256 --check" >> release.txt
         echo '```' >> release.txt
         cat release.txt
