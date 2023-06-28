@@ -12,7 +12,8 @@ Build OpenWrt using GitHub Actions
 - <https://github.com/openwrt/openwrt>
 - <https://github.com/fw876/helloworld>
 - <https://github.com/Lienol/openwrt-package>
-- [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-23.05)
+- <https://github.com/immortalwrt/immortalwrt>
+-
 
 ### Download
 
@@ -41,7 +42,7 @@ Make sure its `OK` before upload it.
 ### Usage
 
 - [Fork this Repo](https://github.com/eallion/openwrt) or Click the [Use this template](https://github.com/P3TERX/Actions-OpenWrt/generate) button to create a new repository.
-- Generate `.config` files using [ImmortalWrt](https://github.com/immortalwrt/immortalwrt/tree/openwrt-21.02) source code. ( You can change it through environment variables in the workflow file. )
+- Generate `.config` files using [LEDE](https://github.com/coolsnowwolf/lede) source code. ( You can change it through environment variables in the workflow file. )
 - Push `.config` file to the GitHub repository, and the build starts automatically.Progress can be viewed on the Actions page.
 - When the build is complete, click the `Artifacts` button in the upper right corner of the Actions page to download the binaries.
 
@@ -58,41 +59,36 @@ Add some meta info of your built firmware (such as firmware architecture and ins
 I make Openwrt on Ubuntu / Debian / WSL ...
 
 ```bash
-sudo bash -c 'bash <(curl -s https://build-scripts.immortalwrt.eu.org/init_build_environment.sh)'
+sudo apt update -y
+sudo apt full-upgrade -y
+sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
+git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
+libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
+mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pyelftools \
+libpython3-dev qemu-utils rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip \
+vim wget xmlto xxd zlib1g-dev
 ```
 
 ### Clone
 
 ```bash
-git clone -b openwrt-23.05 --single-branch --filter=blob:none https://github.com/immortalwrt/immortalwrt
+git clone https://github.com/coolsnowwolf/lede
 ```
 
 ### Custom
 
 ```bash
 # Modify default IP
+sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
-
-# Add luci-app-alist
-git clone https://github.com/sbwml/luci-app-alist package/alist
-
-# Add luci-app-easymesh
-git clone https://github.com/ntlf9t/luci-app-easymesh package/luci-app-easymesh
-
-# Add luci-app-mosdns
-find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
-find ./ | grep Makefile | grep mosdns | xargs rm -f
-git clone https://github.com/sbwml/luci-app-mosdns -b v5 package/mosdns
-git clone https://github.com/sbwml/v2ray-geodata package/v2ray-geodata
-
-# Add luci-app-pushbot
-git clone https://github.com/zzsj0928/luci-app-pushbot package/luci-app-pushbot
 ```
 
 ### Install feeds
 
 ```bash
-./scripts/feeds update -a && ./scripts/feeds install -a
+./scripts/feeds update -a
+./scripts/feeds install -a
 ```
 
 ### Generate config
@@ -104,33 +100,37 @@ make menuconfig
 ### (Option) Download`.config`
 
 ```bash
-cd ~/immortalwrt
+cd ~/lede
 rm .config
-wget -O .config https://raw.githubusercontent.com/eallion/openwrt/main/immortalwrt.config 
+wget -O .config https://raw.githubusercontent.com/eallion/openwrt/main/.config 
 ```
 
 ### Make
 
 ```bash
-make -j8 download V=s
-make -j$(($(nproc) + 1)) V=s
+make download -j8
+make V=s -j$(nproc)
 ```
 
-### Regenerate `.config`
+### Remake
+
+```bash
+cd lede
+git pull
+./scripts/feeds update -a
+./scripts/feeds install -a
+make defconfig
+make download -j8
+make V=s -j$(nproc)
+```
+
+### Regenerate config
 
 ```bash
 rm -rf ./tmp && rm -rf .config
-```
-
-```bash
 make menuconfig
-```
-
-Remake on local
-
-```bash
-make -j8 download V=s
-make -j$(($(nproc) + 1)) V=s
+make download -j8
+make V=s -j$(nproc)
 ```
 
 // or:
@@ -139,7 +139,7 @@ Push `.config` to [eallion/openwrt](https://github.com/eallion/openwrt) make Ope
 
 ```bash
 rm ~/openwrt/.config
-cp ~/immortalwrt/.config ~/openwrt/
+cp ~/lede/.config ~/openwrt/
 cd ~/openwrt
 git add .
 git commit -m "chore: update config"
