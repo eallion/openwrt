@@ -74,12 +74,12 @@ jobs:
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
 
-    - name: Cache
-      uses: klever1988/cachewrtbuild@main
-      with:
-        ccache: 'true'
-        toolchain: true
-        prefix: ${{ github.workspace }}/openwrt
+#    - name: Cache
+#      uses: klever1988/cachewrtbuild@main
+#      with:
+#        ccache: 'true'
+#        toolchain: true
+#        prefix: ${{ github.workspace }}/openwrt
 
     - name: Load custom feeds
       run: |
@@ -210,6 +210,11 @@ jobs:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: ${{ env.FIRMWARE }}/*
+
+    - name: PUSH PLUS
+      if: steps.tag.outputs.status == 'success' && env.PUSHPLUS_TOKEN == 'true'
+      run: |
+        curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="Build ImmotalWrt Success" --data "content=GitHub ImmotalWrt 编译完成!"  "http://www.pushplus.plus/send"
 
     - name: Delete workflow runs
       uses: GitRML/delete-workflow-runs@main
