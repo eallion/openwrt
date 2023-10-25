@@ -21,10 +21,11 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 #git clone https://github.com/thinktip/luci-theme-neobird.git package/lean/luci-theme-neobird
 
 # Add luci-app-cloudflarespeedtest
-git clone https://github.com/eallion/luci-app-cloudflarespeedtest package/luci-app-cloudflarespeedtest
+git clone https://github.com/immortalwrt-collections/openwrt-cdnspeedtest package/openwrt-cdnspeedtest
+git clone https://github.com/mingxiaoyu/luci-app-cloudflarespeedtest package/luci-app-cloudflarespeedtest
 
 # Add luci-app-nginx-manager
-git clone https://github.com/eallion/luci-app-nginx-manager package/luci-app-nginx-manager
+git clone https://github.com/sun-cut/luci-app-nginx-manager package/luci-app-nginx-manager
 
 # Add luci-app-mosdns
 find ./ | grep Makefile | grep v2ray-geodata | xargs rm -f
