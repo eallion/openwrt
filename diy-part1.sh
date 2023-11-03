@@ -9,7 +9,7 @@
 #=============================================================
 
 # Uncomment a feed source
-sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
+#sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 #echo 'src-git helloworld https://github.com/fw876/helloworld' >> feeds.conf.default
 
 # Add a feed source
@@ -17,3 +17,6 @@ sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
 # Add https://github.com/immortalwrt-collections/openwrt-cdnspeedtest
 #echo "src-git cdnspeedtest https://github.com/immortalwrt-collections/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
+
+echo "src-git helloworld https://github.com/eallion/helloworld.git;fw876/helloworld" >> "feeds.conf.default"
+echo "src-git cdnspeedtest https://github.com/immortalwrt-collections/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
