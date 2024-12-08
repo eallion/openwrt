@@ -29,12 +29,12 @@ if ! $FORCE; then
     else
         echo "Git updates found."
         git_updated=true
-				git pull
+        git pull
     fi
 else
     echo "Forcing git pull."
     git_updated=true
-		git pull
+    git pull
 fi
 
 # 更新软件包
@@ -92,11 +92,22 @@ for file_type in "${FILE_TYPES[@]}"; do
             cp --preserve=timestamps "$file" "$TARGET_PATH/$new_filename"
             if [ $? -eq 0 ]; then
                 echo "Copied: $new_filename"
+                
+                # 从 sha256sums 文件中提取对应的 sha256 值
+                sha256_value=$(grep --color=none -E "\*$filename" "$IMMORTALWRT_PATH/bin/targets/x86/64/sha256sums" | awk '{print $1}')
+                
+                # 生成 .sha256 文件
+                if [ -n "$sha256_value" ]; then
+                    echo "$sha256_value *$new_filename" > "$TARGET_PATH/$new_filename.sha256"
+                    echo "Generated: $new_filename.sha256"
+                else
+                    echo "Warning: SHA256 value not found for $filename"
+                fi
             fi
         done
     fi
 done
 
-echo "ImmortalWrt build successful!"
 echo "Sha256 Hash:"
 grep --color=none -E "($(IFS='|'; echo "${FILE_TYPES[*]}"))" "$IMMORTALWRT_PATH/bin/targets/x86/64/sha256sums"
+echo "ImmortalWrt build successful!"
