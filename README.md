@@ -1,8 +1,8 @@
-# Actions OpenWrt
+# OpenWrt Builder
 
-Build OpenWrt using GitHub Actions
+Build OpenWrt using GitHub Actions.
 
-[![Build OpenWrt Lean](https://github.com/eallion/openwrt/actions/workflows/build-openwrt.yml/badge.svg?branch=main)](https://github.com/eallion/openwrt/actions/workflows/build-openwrt.yml)
+[![OpenWrt Builder](https://github.com/eallion/openwrt/actions/workflows/build-immortalwrt.yml/badge.svg?branch=main)](https://github.com/eallion/openwrt/actions/workflows/build-immortalwrt.yml)
 
 [中文教程 | Read the details in P3TERX's blog (in Chinese)](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
 
@@ -17,21 +17,19 @@ Build OpenWrt using GitHub Actions
 
 ### Download
 
-- [Releases](https://github.com/eallion/openwrt/releases/latest/)
+- [Releases](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz)
 
 This repo only keeps the latest 5 releases.
 
 ### Check sha256sums
 
-Download the [sha256sums](https://github.com/eallion/openwrt/releases/latest/) file.
-
-Make sure the sha256sums file and img file in a same folder.
+Download the [`.sha256`](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256) file. Make sure the sha256sums file and img file in a same folder.
 
 ```bash
-sha256sum -c sha256sums --ignore-missing 
+sha256sum -c immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256 --ignore-missing 
 ```
 
-or
+or find sha256sums on the release tag note, check it manual
 
 ```bash
 echo "bf69a9ae42825a76c449699f393b8aa35216f3ffef428ae851d76ce4386bd3c3 *openwrt-x86-64-generic-squashfs-combined.img.gz" | shasum -a 256 --check
@@ -39,20 +37,18 @@ echo "bf69a9ae42825a76c449699f393b8aa35216f3ffef428ae851d76ce4386bd3c3 *openwrt-
 
 Make sure its `OK` before upload it.
 
-### Usage
+# Build your Openwrt
 
 - [Fork this Repo](https://github.com/eallion/openwrt) or Click the [Use this template](https://github.com/P3TERX/Actions-OpenWrt/generate) button to create a new repository.
 - Generate `.config` files using [Immortalwrt](https://github.com/immortalwrt/immortalwrt) source code (You can change it through environment variables in the workflow file.)
-- Push `.config` file to the GitHub repository, and the build starts automatically.Progress can be viewed on the Actions page.
-- When the build is complete, click the `Artifacts` button in the upper right corner of the Actions page to download the binaries.
+- Push `.config` file to the GitHub repository, and the build starts automatically. Progress can be viewed on the Actions page.
+- When the build is complete, click the `Artifacts` (if `true`) button in the upper right corner of the Actions page to download the binaries. Or download on the release (if `true`) page.
 
 ### Tips
 
 It may take a long time to create a `.config` file and build the OpenWrt firmware. Thus, before create repository to build your own firmware, you may check out if others have already built it which meet your needs by simply [search `Actions-Openwrt` in GitHub](https://github.com/search?q=Actions-openwrt).
 
 Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
-
-# Make on local
 
 ### OS
 
@@ -71,7 +67,7 @@ sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bis
   upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 ```
 
-### Windows WSL Path
+### (Option) Windows WSL Path
 
 > https://openwrt.org/docs/guide-developer/toolchain/wsl
 
@@ -104,7 +100,7 @@ sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generat
 
 ### Generate config
 
-```
+```bash
 make menuconfig
 ```
 
@@ -133,7 +129,7 @@ make download -j8
 make V=s -j$(nproc)
 ```
 
-Then you can download firmware at [Releases](https://github.com/eallion/openwrt/releases/latest/) later.
+Then you can find firmware at `immortalwrt/bin/targets/x86/64/` later.
 
 ### License
 
