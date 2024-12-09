@@ -137,25 +137,27 @@ jobs:
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        SHA_TMP="`cat sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
-        FILE_SIZE=$(du -b "immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
+        SHA_TMP="`cat openwrt/bin/targets/x86/64/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
+        FILE_SIZE=$(du -b "openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
         FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)		
         echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        echo -e "### ImmortalWrt 23.05\n" >> release.txt
+        echo -e "# ImmortalWrt 23.05\n" >> release.txt
         echo -e "The current ImmortalWrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
-        echo -e "- [**ImmortalWrt 23.05.4**](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz) <br>*Build: `date +"%a, %b %d, %Y"`*\n" >> release.txt
-        echo -e "📝 Sha256sum:\n" >> release.txt
+        echo -e "### 📦️ Download Latest Image" >> release.txt
+        echo -e "- [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz)" >> release.txt
+        echo -e "*Build: `date +"%a, %b %d, %Y"`*\n" >> release.txt
+        echo -e "### 📝 Sha256sum:\n" >> release.txt
         echo "| Image for your Device | sha256sum | Size |" >> release.txt
         echo "| --- | --- | --- |" >> release.txt
         echo -e "| generic-squashfs-combined-efi.img.gz | "$SHA_TMP" | "$FILE_SIZE_MB" MB |\n" >> release.txt
-        echo "✅ Check sha256sums:" >> release.txt
+        echo "### ✅ Check sha256sums:" >> release.txt
         echo '```bash' >> release.txt
         echo "echo \"$SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check" >> release.txt
         echo '```' >> release.txt
         echo -e '### ImmortalWrt Downloads Archive\n' >> release.txt
         echo -e "- [**downloads.immortalwrt.org**](https://downloads.immortalwrt.org/)" >> release.txt
-        grep "immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" openwrt/bin/targets/x86/64/sha256sums | awk '{print $1}' > openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
+        echo $SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz > openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
         echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
