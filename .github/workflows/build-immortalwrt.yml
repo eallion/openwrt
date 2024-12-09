@@ -20,7 +20,7 @@ on:
     branches:
       - main
     paths:
-      - 'immortalwrt.config'
+      - '.config'
   watch:
     types: started
 
