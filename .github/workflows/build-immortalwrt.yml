@@ -146,7 +146,7 @@ jobs:
       uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
-        TOKEN_FOR_OPENWRT: ${{ secrets.TOKEN_FOR_OPENWRT }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
       with:
         tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
@@ -165,4 +165,4 @@ jobs:
         keep_latest: 3
         delete_tags: true
       env:
-        TOKEN_FOR_OPENWRT: ${{ secrets.TOKEN_FOR_OPENWRT }}
+        GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
