@@ -15,8 +15,4 @@
 # Add a feed source
 # sed -i '$a src-git lienol https://github.com/Lienol/openwrt-package' feeds.conf.default
 
-# Add https://github.com/immortalwrt-collections/openwrt-cdnspeedtest
-#echo "src-git cdnspeedtest https://github.com/immortalwrt-collections/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
-
-echo "src-git helloworld https://github.com/fw876/helloworld.git;main" >> "feeds.conf.default"
-#echo "src-git cdnspeedtest https://github.com/immortalwrt-collections/openwrt-cdnspeedtest.git" >> "feeds.conf.default"
+echo "Not DIY. Build Started..."
