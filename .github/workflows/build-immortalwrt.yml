@@ -139,23 +139,32 @@ jobs:
       run: |
         SHA_TMP="`cat openwrt/bin/targets/x86/64/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
         FILE_SIZE=$(du -b "openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
-        FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)		
-        echo "release_tag=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)
+        RELEASE_DATE=$(date +"%Y.%m.%d-%H%M")
+        echo "release_tag=$RELEASE_DATE" >> $GITHUB_OUTPUT
         touch release.txt
-        echo -e "# ImmortalWrt 23.05\n" >> release.txt
+        echo -e "### 📦️ ImmortalWrt 23.05 x86-64\n" >> release.txt
         echo -e "The current ImmortalWrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
-        echo -e "### 📦️ Download Latest Image" >> release.txt
-        echo -e "- [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz)" >> release.txt
-        echo -e "*Build: `date +"%a, %b %d, %Y"`*\n" >> release.txt
-        echo -e "### 📝 Sha256sum:\n" >> release.txt
-        echo "| Image for your Device | sha256sum | Size |" >> release.txt
-        echo "| --- | --- | --- |" >> release.txt
-        echo -e "| generic-squashfs-combined-efi.img.gz | "$SHA_TMP" | "$FILE_SIZE_MB" MB |\n" >> release.txt
-        echo "### ✅ Check sha256sums:" >> release.txt
+        echo "| Meta | Detail |" >> release.txt
+        echo "| --- | --- |" >> release.txt
+        echo -e "| Image | [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz) |" >> release.txt
+        echo -e "| Date | *$RELEASE_DATE* |" >> release.txt
+        echo -e "| Source | [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) |" >> release.txt
+        echo -e "| Branch | openwrt-23.05 |" >> release.txt
+        echo -e "| Architecture | x86_64 |" >> release.txt
+        echo -e "| Sha256 | "$SHA_TMP" |" >> release.txt
+        echo -e "| Size | "$FILE_SIZE_MB" MB |\n" >> release.txt
+        echo -e "### ✅ Check sha256sums\n" >> release.txt
+        echo -e '> Perhaps need to download first:\n' >> release.txt
         echo '```bash' >> release.txt
-        echo "echo \"$SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check" >> release.txt
-        echo '```' >> release.txt
-        echo -e '### ImmortalWrt Downloads Archive\n' >> release.txt
+        echo "wget https://github.com/eallion/openwrt/releases/latest/download/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" >> release.txt
+        echo -e '```\n' >> release.txt
+        echo -e 'One-click verification. Output `OK` to true:\n' >> release.txt
+        echo '```bash' >> release.txt
+        echo -e "echo \"$SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check\n\n" >> release.txt
+        echo -e '# immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz: OK' >> release.txt
+        echo -e '```\n' >> release.txt
+        echo -e '### 🗃️ ImmortalWrt Downloads Archive\n' >> release.txt
         echo -e "- [**downloads.immortalwrt.org**](https://downloads.immortalwrt.org/)" >> release.txt
         echo $SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz > openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
         echo "status=success" >> $GITHUB_OUTPUT
@@ -166,7 +175,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
       with:
-        tag_name: Immortalwrt-x86-64-${{ steps.tag.outputs.release_tag }}
+        tag_name: ${{ steps.tag.outputs.release_tag }}
         body_path: release.txt
         files: |
           openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz
