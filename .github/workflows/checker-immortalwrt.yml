@@ -1,0 +1,50 @@
+name: Check ImmortalWrt Updates
+
+on:
+  schedule:
+    # 每天 UTC 时间 0:00（北京时间 8:00）运行
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # 手动触发选项
+
+env:
+  REPO_URL: https://github.com/immortalwrt/immortalwrt
+  REPO_BRANCH: openwrt-23.05
+
+jobs:
+  check-updates:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Repository Updates
+        id: check-updates
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
+        run: |
+          # 获取最新提交的时间戳
+          latest_commit_timestamp=$(gh api repos/immortalwrt/immortalwrt/commits/${{ env.REPO_BRANCH }} --jq '.commit.committer.date')
+          
+          # 转换为 Unix 时间戳
+          latest_commit_unix=$(date -d "$latest_commit_timestamp" +%s)
+          
+          # 获取当前时间戳
+          current_unix=$(date +%s)
+          
+          # 计算时间差（秒数）
+          time_diff=$((current_unix - latest_commit_unix))
+          
+          # 24 小时 = 86400 秒
+          if [ $time_diff -le 86400 ]; then
+            echo "Updates detected within last 24 hours!"
+            echo "update_available=true" >> $GITHUB_OUTPUT
+          else
+            echo "No recent updates found."
+            echo "update_available=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Trigger Build Workflow
+        if: steps.check-updates.outputs.update_available == 'true'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.TOKEN_FOR_OPENWRT }}
+          event-type: immortalwrt-update
+          client-payload: '{"ref": "${{ github.ref }}", "timestamp": "${{ steps.check-updates.outputs.latest_commit_timestamp }}"}'
