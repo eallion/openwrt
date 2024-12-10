@@ -21,8 +21,6 @@ on:
       - main
     paths:
       - '.config'
-  watch:
-    types: started
 
 env:
   REPO_URL: https://github.com/immortalwrt/immortalwrt

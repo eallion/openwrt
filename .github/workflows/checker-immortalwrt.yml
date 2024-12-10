@@ -32,7 +32,7 @@ jobs:
           # 计算时间差（秒数）
           time_diff=$((current_unix - latest_commit_unix))
           
-          # 24小时 = 86400 秒
+          # 24 小时 = 86400 秒
           if [ $time_diff -le 86400 ]; then
             echo "Updates detected within last 24 hours!"
             echo "update_available=true" >> $GITHUB_OUTPUT
