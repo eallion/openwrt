@@ -1,46 +1,37 @@
 #
-# Copyright (c) 2019-2020 P3TERX <https://p3terx.com>
+# https://github.com/P3TERX/Actions-OpenWrt
+#
+# File: .github/workflows/openwrt-bulder.yml
+# Description: Build OpenWrt using GitHub Actions
+#
+# Copyright (c) 2019-2024 P3TERX <https://p3terx.com>
 #
 # This is free software, licensed under the MIT License.
 # See /LICENSE for more information.
 #
-# https://github.com/P3TERX/Actions-OpenWrt
-# Description: Build OpenWrt using GitHub Actions
-#
 
-name: Build OpenWrt Lean
+name: OpenWrt Builder
 
 on:
   repository_dispatch:
+    types: [openwrt-update]
   workflow_dispatch:
-    inputs:
-      ssh:
-        description: 'SSH connection to Actions'
-        required: false
-        default: 'false'
-#  release:
-#    types: published
   push:
     branches:
       - main
     paths:
       - '.config'
-  watch:
-    types: started
 
 env:
-  REPO_URL: https://github.com/coolsnowwolf/lede
-  REPO_BRANCH: master
+  REPO_URL: https://github.com/openwrt/openwrt
+  REPO_BRANCH: openwrt-23.05
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: .config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_SH: diy-part2.sh
   UPLOAD_BIN_DIR: false
-  UPLOAD_FIRMWARE: true
-  UPLOAD_COWTRANSFER: false
-  UPLOAD_WETRANSFER: false
+  UPLOAD_FIRMWARE: false
   UPLOAD_RELEASE: true
-  PUSHPLUS_TOKEN: true
   TZ: Asia/Shanghai
 
 jobs:
@@ -50,17 +41,15 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@main
-      with:
-#       ref: master
-        fetch-depth: 0
 
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc
+        sudo rm -rf /etc/apt/sources.list.d/* /usr/share/dotnet /usr/local/lib/android /opt/ghc /opt/hostedtoolcache/CodeQL
+        sudo docker image prune --all --force
         sudo -E apt-get -qq update
-        sudo -E apt-get -qq install $(curl -fsSL git.io/depends-ubuntu-2004)
+        sudo -E apt-get -qq install binutils bzip2 diff find flex gawk gcc-6+ getopt grep install libc-dev libz-dev make4.1+ perl python3.7+ rsync subversion unzip which
         sudo -E apt-get -qq autoremove --purge
         sudo -E apt-get -qq clean
         sudo timedatectl set-timezone "$TZ"
@@ -73,13 +62,6 @@ jobs:
         df -hT $PWD
         git clone $REPO_URL -b $REPO_BRANCH openwrt
         ln -sf /workdir/openwrt $GITHUB_WORKSPACE/openwrt
-
-#    - name: Cache
-#      uses: klever1988/cachewrtbuild@main
-#      with:
-#        ccache: 'true'
-#        toolchain: true
-#        prefix: ${{ github.workspace }}/openwrt
 
     - name: Load custom feeds
       run: |
@@ -102,19 +84,12 @@ jobs:
         cd openwrt
         $GITHUB_WORKSPACE/$DIY_P2_SH
 
-    - name: SSH connection to Actions
-      uses: P3TERX/ssh2actions@v1.0.0
-      if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-      env:
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-
     - name: Download package
       id: package
       run: |
         cd openwrt
         make defconfig
-        make download -j8
+        make download -j32
         find dl -size -1024c -exec ls -l {} \;
         find dl -size -1024c -exec rm -f {} \;
 
@@ -123,8 +98,8 @@ jobs:
       run: |
         cd openwrt
         echo -e "$(nproc) thread compile"
-        make -j$(nproc) || make -j1 || make -j1 V=s
-        echo "::set-output name=status::success"
+        make -j$(($(nproc) * 2)) CONFIG_DEBUG=n || make -j1 || make -j1 V=s
+        echo "status=success" >> $GITHUB_OUTPUT
         grep '^CONFIG_TARGET.*DEVICE.*=y' .config | sed -r 's/.*DEVICE_(.*)=y/\1/' > DEVICE_NAME
         [ -s DEVICE_NAME ] && echo "DEVICE_NAME=_$(cat DEVICE_NAME)" >> $GITHUB_ENV
         echo "FILE_DATE=_$(date +"%Y%m%d%H%M")" >> $GITHUB_ENV
@@ -146,14 +121,8 @@ jobs:
       run: |
         cd openwrt/bin/targets/*/*
         rm -rf packages
-        rm -rf openwrt-x86-64-generic-squashfs-rootfs.img.gz
-        rm -rf openwrt-x86-64-generic-rootfs.tar.gz
-        rm -rf openwrt-x86-64-generic-kernel.bin
-        sed -i '/openwrt-x86-64-generic-squashfs-rootfs.img.gz/d' sha256sums
-        sed -i '/openwrt-x86-64-generic-rootfs.tar.gz/d' sha256sums
-        sed -i '/openwrt-x86-64-generic-kernel.bin/d' sha256sums
         echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+        echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
@@ -162,72 +131,63 @@ jobs:
         name: OpenWrt_firmware${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: ${{ env.FIRMWARE }}
 
-    - name: Upload firmware to cowtransfer
-      id: cowtransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_COWTRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer cow --block 2621440 -s -p 64 --no-progress ${FIRMWARE} 2>&1 | tee cowtransfer.log
-        echo "::warning file=cowtransfer.com::$(cat cowtransfer.log | grep https)"
-        echo "::set-output name=url::$(cat cowtransfer.log | grep https | cut -f3 -d" ")"
-
-    - name: Upload firmware to WeTransfer
-      id: wetransfer
-      if: steps.organize.outputs.status == 'success' && env.UPLOAD_WETRANSFER == 'true' && !cancelled()
-      run: |
-        curl -fsSL git.io/file-transfer | sh
-        ./transfer wet -s -p 16 --no-progress ${FIRMWARE} 2>&1 | tee wetransfer.log
-        echo "::warning file=wetransfer.com::$(cat wetransfer.log | grep https)"
-        echo "::set-output name=url::$(cat wetransfer.log | grep https | cut -f3 -d" ")"
-
     - name: Generate release tag
       id: tag
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       run: |
-        echo "::set-output name=release_tag::$(date +"%Y.%m.%d-%H%M")"
+        SHA_TMP="`cat openwrt/bin/targets/x86/64/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
+        FILE_SIZE=$(du -b "openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
+        FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)
+        echo "RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
-        echo "💡 Sha256sums:" >> release.txt
-        [ $UPLOAD_COWTRANSFER = true ] && echo "🔗 Cowtransfer: [${{ steps.cowtransfer.outputs.url }}](${{ steps.cowtransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WETRANSFER = true ] && echo "🔗 WeTransfer: [${{ steps.wetransfer.outputs.url }}](${{ steps.wetransfer.outputs.url }})" >> release.txt
-        [ $UPLOAD_WENSHUSHU = true ] && echo "🔗 WenShuShu: [${{ steps.wenshushu.outputs.url }}](${{ steps.wenshushu.outputs.url }})" >> release.txt
-        [ $UPLOAD_TMP = true ] && echo "🔗 TMP.link: [${{ steps.tmplink.outputs.url }}](${{ steps.tmplink.outputs.url }})" >> release.txt
-        echo '```' >> release.txt
-        cat ${{ env.FIRMWARE }}/sha256sums >> release.txt
-        sed -i '/rootfs/d' release.txt
-        sed -i '/kernel/d' release.txt
-        echo '```' >> release.txt
-        echo "💡 Tips: how to check shasums" >> release.txt
-        echo '```shell' >> release.txt
-        sha_tmp="`cat ${{ env.FIRMWARE }}/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined-efi.img.gz'`"
-        echo "echo \"$sha_tmp\" | shasum -a 256 --check" >> release.txt
-        echo '```' >> release.txt
-        cat release.txt
-        echo "::set-output name=status::success"
+        echo -e "### 📦️ Openwrt 23.05 x86-64\n" >> release.txt
+        echo -e "The current Openwrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
+        echo "| Meta | Detail |" >> release.txt
+        echo "| --- | --- |" >> release.txt
+        echo -e "| Image | ⬇️ [openwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/openwrt-x86-64-generic-squashfs-combined-efi.img.gz) |" >> release.txt
+        echo -e "| Date | `date +"%H:%M %a, %b %d, %Y"` |" >> release.txt
+        echo -e "| Source | [https://github.com/openwrt/openwrt](https://github.com/openwrt/openwrt) |" >> release.txt
+        echo -e "| Branch | openwrt-23.05 |" >> release.txt
+        echo -e "| Architecture | x86-64 |" >> release.txt
+        echo -e "| FS | SquashFS |" >> release.txt
+        echo -e "| FI | EFI |" >> release.txt
+        echo -e "| [Sha256](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/openwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256) | "$SHA_TMP" |" >> release.txt
+        echo -e "| Size | "$FILE_SIZE_MB" MB |\n" >> release.txt
+        echo -e "### ✅ Check sha256sums\n" >> release.txt
+        echo -e '> Perhaps need to [download](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/openwrt-x86-64-generic-squashfs-combined-efi.img.gz) first:\n' >> release.txt
+        echo '```bash' >> release.txt
+        echo "wget https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/openwrt-x86-64-generic-squashfs-combined-efi.img.gz" >> release.txt
+        echo -e '```\n' >> release.txt
+        echo -e 'One-click verification. Output `OK` to true:\n' >> release.txt
+        echo '```bash' >> release.txt
+        echo -e "echo \"$SHA_TMP *openwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check\n" >> release.txt
+        echo -e '# openwrt-x86-64-generic-squashfs-combined-efi.img.gz: OK' >> release.txt
+        echo -e '```\n' >> release.txt
+        echo -e '### 🗃️ Openwrt Downloads Archive\n' >> release.txt
+        echo -e "- [**downloads.openwrt.org**](https://downloads.openwrt.org/releases/)" >> release.txt
+        echo $SHA_TMP *openwrt-x86-64-generic-squashfs-combined-efi.img.gz > openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
+        echo "status=success" >> $GITHUB_OUTPUT
 
     - name: Upload firmware to release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@master
       if: steps.tag.outputs.status == 'success' && !cancelled()
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
       with:
-        name: OpenWrt_x86-64-${{ steps.tag.outputs.release_tag }}
-        tag_name: ${{ steps.tag.outputs.release_tag }}
+        tag_name: ${{ steps.tag.outputs.RELEASE_TAG }}
         body_path: release.txt
-        files: ${{ env.FIRMWARE }}/*
-
-    - name: PUSH PLUS
-      if: steps.tag.outputs.status == 'success' && env.PUSHPLUS_TOKEN == 'true'
-      run: |
-        curl -k --data token="${{ secrets.PUSH_PLUS_TOKEN }}" --data title="Build OpenWrt Success" --data "content=GitHub OpenWrt 编译完成!"  "http://www.pushplus.plus/send"
+        files: |
+          openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz
+          openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
 
     - name: Delete workflow runs
-      uses: GitRML/delete-workflow-runs@main
+      uses: Mattraks/delete-workflow-runs@main
       with:
         retain_days: 7
-        keep_minimum_runs: 25
+        keep_minimum_runs: 10
 
     - name: Remove old Releases
-      uses: dev-drprasad/delete-older-releases@v0.1.0
+      uses: dev-drprasad/delete-older-releases@master
       if: env.UPLOAD_RELEASE == 'true' && !cancelled()
       with:
         keep_latest: 5
