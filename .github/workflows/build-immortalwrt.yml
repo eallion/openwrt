@@ -167,6 +167,8 @@ jobs:
         echo -e "- [**downloads.immortalwrt.org**](https://downloads.immortalwrt.org/)" >> release.txt
         echo $SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz > openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
         echo "status=success" >> $GITHUB_OUTPUT
+        sed '/### ✅ Check sha256sums/,$d' release.txt > email_body.md
+        echo "EMAIL_BODY=$(cat email_body.md)" >> $GITHUB_ENV
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@master
@@ -194,3 +196,13 @@ jobs:
         delete_tags: false
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
+
+    - name: 'Sending Email with SendGrid'
+      uses: MuhammadJamee/email_generator@v1
+      with:
+        sendgrid-api-key: ${{ secrets.SENDGRID_API_KEY }}
+        subject: 'ImmortalWrt Build Successful'
+        from-email: eallion.s+github@gmail.com
+        to-email: eallions@gmail.com
+        markdown-body: ${{ env.EMAIL_BODY }}
+        # attachment-file-path: 'openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz'
