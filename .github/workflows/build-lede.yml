@@ -137,7 +137,7 @@ jobs:
       run: |
         SHA_TMP="`cat openwrt/bin/targets/x86/64/sha256sums | grep 'openwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
         FILE_SIZE=$(du -b "openwrt/bin/targets/x86/64/openwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
-        FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)
+        FILE_SIZE_MB=$(echo "$FILE_SIZE" | awk '{printf "%.2f", $1 / (1024 * 1024)}')
         echo "RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
         touch release.txt
         echo -e "### 📦️ Openwrt LEDE x86-64\n" >> release.txt
