@@ -167,6 +167,7 @@ jobs:
         echo -e "- [**downloads.immortalwrt.org**](https://downloads.immortalwrt.org/)" >> release.txt
         echo $SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz > openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
         echo "status=success" >> $GITHUB_OUTPUT
+        sed '/### ✅ Check sha256sums/,$d' release.txt > email_body.md
 
     - name: Upload firmware to release
       uses: softprops/action-gh-release@master
@@ -194,3 +195,39 @@ jobs:
         delete_tags: false
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
+
+    - name: Send mail
+      uses: dawidd6/action-send-mail@v4
+      with:
+        # Specify connection via URL (replaces server_address, server_port, secure,
+        # username and password)
+        #
+        # Format:
+        #
+        #  * smtp://user:password@server:port
+        #  * smtp+starttls://user:password@server:port
+        # connection_url: ${{secrets.MAIL_CONNECTION}}
+        # Required mail server address if not connection_url:
+        server_address: smtpdm.aliyun.com
+        # Server port, default 25:
+        server_port: 465
+        # Optional whether this connection use TLS (default is true if server_port is 465)
+        secure: true
+        # Optional (recommended) mail server username:
+        username: ${{secrets.MAIL_USERNAME}}
+        # Optional (recommended) mail server password:
+        password: ${{secrets.MAIL_PASSWORD}}
+        # Required mail subject:
+        subject: ImmortalWrt Build Successful
+        # Required recipients' addresses:
+        to: eallion.s+github+openwrt@gmail.com
+        # Required sender full name (address can be skipped):
+        from: ImmortalWrt Build
+        # Optional plain body:
+        # body: Build job of ${{github.repository}} completed successfully!
+        # Optional HTML body read from file:
+        html_body: file://email_body.md
+        # Optional unsigned/invalid certificates allowance:
+        ignore_cert: true
+        # Optional converting Markdown to HTML (set content_type to text/html too):
+        convert_markdown: true
