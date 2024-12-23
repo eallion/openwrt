@@ -138,7 +138,8 @@ jobs:
         SHA_TMP="`cat openwrt/bin/targets/x86/64/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
         FILE_SIZE=$(du -b "openwrt/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
         FILE_SIZE_MB=$(echo "scale=2; $FILE_SIZE / (1024 * 1024)" | bc)
-        echo "RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")" >> $GITHUB_OUTPUT
+        RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")
+        echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
         touch release.txt
         echo -e "### 📦️ ImmortalWrt 23.05 x86-64\n" >> release.txt
         echo -e "The current ImmortalWrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
