@@ -54,7 +54,7 @@ jobs:
       - name: Generate Firmware SHA-256
         run: |
           cp ${{ github.workspace }}/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz ${{ github.workspace }}
-          SHA_TMP="`cat ${{ github.workspace }}/bin/targets/x86/64/sha256sums | grep 'immortalwrt-23.05.4-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
+          SHA_TMP="`cat ${{ github.workspace }}/bin/targets/x86/64/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
           echo $SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz > ${{ github.workspace }}/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
 
       - name: Generate release tag
@@ -101,8 +101,8 @@ jobs:
           tag_name: ${{ steps.tag.outputs.RELEASE_TAG }}
           body_path: release.txt
           files: |
-            ${{ github.workspace }}/immortalwrt-23.05.4-x86-64-generic-squashfs-combined-efi.img.gz
-            ${{ github.workspace }}/immortalwrt-23.05.4-x86-64-generic-squashfs-combined-efi.img.gz.sha256
+            ${{ github.workspace }}/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz
+            ${{ github.workspace }}/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256
           token: ${{ secrets.TOKEN_FOR_OPENWRT }}
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
