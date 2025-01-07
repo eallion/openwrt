@@ -59,7 +59,6 @@ jobs:
 
       - name: Generate release tag
         id: tag
-        if: env.UPLOAD_RELEASE == 'true' && !cancelled()
         run: |
           SHA_TMP="`cat ${{ github.workspace }}/bin/targets/x86/64/sha256sums | grep 'immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz' | awk '{print $1}'`"
           FILE_SIZE=$(du -b "${{ github.workspace }}/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
