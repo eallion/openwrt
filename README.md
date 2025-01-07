@@ -1,3 +1,29 @@
+# AutoBuildImmortalWrt
+
+[![GitHub](https://img.shields.io/github/license/wukongdaily/AutoBuildImmortalWrt.svg?label=LICENSE&logo=github&logoColor=%20)](https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/LICENSE)
+![GitHub Stars](https://img.shields.io/github/stars/wukongdaily/AutoBuildImmortalWrt.svg?style=flat&logo=appveyor&label=Stars&logo=github)
+![GitHub Forks](https://img.shields.io/github/forks/wukongdaily/AutoBuildImmortalWrt.svg?style=flat&logo=appveyor&label=Forks&logo=github) [![Github](https://img.shields.io/badge/RELEASE:AutoBuildImmortalWrt-123456?logo=github&logoColor=fff&labelColor=green&style=flat)](https://github.com/wukongdaily/AutoBuildImmortalWrt/releases) [![Bilibili](https://img.shields.io/badge/Bilibili-123456?logo=bilibili&logoColor=fff&labelColor=fb7299)](https://www.bilibili.com/video/BV1EG6VYCER3) [![操作步骤](https://img.shields.io/badge/YouTube-123456?logo=youtube&labelColor=ff0000)](https://youtu.be/xIVtUwZR6U0)
+
+## 🤔 这是什么？
+
+它是一个工作流。可快速构建 带 docker 且支持自定义固件大小的 immortalWrt
+> 1、支持自定义固件大小 默认 1GB <br>
+> 2、支持预安装 docker（可选）<br>
+> 3、默认 LAN 口 IP 为 192.168.0.1
+> 4、可以通过 `99-custom.sh` 配置和调整
+
+## 如何查询都有哪些插件？
+
+https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/23.05.4/packages/aarch64_cortex-a53/luci/ <br>
+https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/23.05.4/packages/x86_64/luci/
+
+## 该固件默认属性？(必读)
+
+- 该固件刷入单网口设备默认采用 DHCP 模式，自动获得 ip。类似 NAS 的做法
+- 该固件刷入多网口设备默认 WAN 口采用 DHCP 模式，LAN 口 ip 为 192.168.100.1
+- 综合上述特点，单网口应该先接路由器，先在路由器查看一下它的 ip 再访问。
+- 上述特点 你都可以通过 `99-custom.sh` 配置和调整
+
 # OpenWrt Builder
 
 Build OpenWrt using GitHub Actions.
@@ -14,6 +40,7 @@ Build OpenWrt using GitHub Actions.
 - https://github.com/Lienol/openwrt-package
 - https://github.com/immortalwrt/immortalwrt
 - https://github.com/immortalwrt/homeproxy
+- https://github.com/wukongdaily/AutoBuildImmortalWrt
 
 ### Download
 
@@ -130,6 +157,15 @@ make V=s -j$(nproc)
 ```
 
 Then you can find firmware at `immortalwrt/bin/targets/x86/64/` later.
+
+## ❤️其它 GitHub Action 项目推荐🌟 （建议收藏）⬇️
+
+https://github.com/wukongdaily/RunFilesBuilder<br>
+https://github.com/wukongdaily/DockerTarBuilder
+
+# 🌟鸣谢
+
+### https://github.com/immortalwrt
 
 ### License
 
