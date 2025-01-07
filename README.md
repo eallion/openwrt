@@ -1,10 +1,23 @@
-# OpenWrt Builder
+# OpenWrt(ImmortalWrt) ImageBuilder
 
-Build OpenWrt using GitHub Actions.
+Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 
-[![OpenWrt Builder](https://github.com/eallion/openwrt/actions/workflows/build-immortalwrt.yml/badge.svg?branch=main)](https://github.com/eallion/openwrt/actions/workflows/build-immortalwrt.yml)
+[![GitHub](https://img.shields.io/github/license/wukongdaily/AutoBuildImmortalWrt.svg?label=LICENSE&logo=github&logoColor=%20)](https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/LICENSE) [![build-x86-64-immortalwrt-23.05.4](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-23.05.4.yml/badge.svg?branch=wukongdaily%2FAutoBuildImmortalWrt)](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-23.05.4.yml)
 
-[中文教程 | Read the details in P3TERX's blog (in Chinese)](https://p3terx.com/archives/build-openwrt-with-github-actions.html)
+### 🤔 这是什么？
+
+它是一个工作流，可快速构建带 Docker 且支持自定义固件大小的 ImmortalWrt。
+
+> 1、支持自定义固件大小 默认 `1GB`  
+> 2、支持预安装 `docker`（可选）  
+> 3、默认 LAN 口 IP 为 `192.168.0.1`  
+> 4、可以通过 `99-custom.sh` 配置和调整  
+> 5、`x86-64/build.sh` 可以添加删除插件
+
+### 如何查询都有哪些插件？
+
+https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/23.05.4/packages/aarch64_cortex-a53/luci/ <br>
+https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/23.05.4/packages/x86_64/luci/
 
 ### Source
 
@@ -14,6 +27,7 @@ Build OpenWrt using GitHub Actions.
 - https://github.com/Lienol/openwrt-package
 - https://github.com/immortalwrt/immortalwrt
 - https://github.com/immortalwrt/homeproxy
+- https://github.com/wukongdaily/AutoBuildImmortalWrt
 
 ### Download
 
@@ -36,101 +50,3 @@ echo "bf69a9ae42825a76c449699f393b8aa35216f3ffef428ae851d76ce4386bd3c3 *openwrt-
 ```
 
 Make sure its `OK` before upload it.
-
-# Build your Openwrt
-
-- [Fork this Repo](https://github.com/eallion/openwrt) or Click the [Use this template](https://github.com/P3TERX/Actions-OpenWrt/generate) button to create a new repository.
-- Generate `.config` files using [Immortalwrt](https://github.com/immortalwrt/immortalwrt) source code (You can change it through environment variables in the workflow file.)
-- Push `.config` file to the GitHub repository, and the build starts automatically. Progress can be viewed on the Actions page.
-- When the build is complete, click the `Artifacts` (if `true`) button in the upper right corner of the Actions page to download the binaries. Or download on the release (if `true`) page.
-
-### Tips
-
-It may take a long time to create a `.config` file and build the OpenWrt firmware. Thus, before create repository to build your own firmware, you may check out if others have already built it which meet your needs by simply [search `Actions-Openwrt` in GitHub](https://github.com/search?q=Actions-openwrt).
-
-Add some meta info of your built firmware (such as firmware architecture and installed packages) to your repository introduction, this will save others' time.
-
-### OS
-
-Ubuntu / Debian / WSL ...
-
-```bash
-sudo apt update -y
-sudo apt full-upgrade -y
-sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
-  bzip2 ccache clang cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
-  g++-multilib git gnutls-dev gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 libelf-dev \
-  libglib2.0-dev libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses-dev libpython3-dev \
-  libreadline-dev libssl-dev libtool libyaml-dev libz-dev lld llvm lrzsz mkisofs msmtp nano \
-  ninja-build p7zip p7zip-full patch pkgconf python3 python3-pip python3-ply python3-docutils \
-  python3-pyelftools qemu-utils re2c rsync scons squashfs-tools subversion swig texinfo uglifyjs \
-  upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-```
-
-### (Option) Windows WSL Path
-
-> https://openwrt.org/docs/guide-developer/toolchain/wsl
-
-```bash
-sudo tee -a /etc/wsl.conf << EOF > /dev/null
-[interop]
-appendWindowsPath = false
-EOF
-exit
-```
-
-### Clone
-
-```bash
-git clone -b openwrt-23.05 --single-branch --filter=blob:none https://github.com/immortalwrt/immortalwrt
-```
-
-### Default Lan IP
-
-```bash
-sed -i 's/192.168.1.1/192.168.0.1/g' package/base-files/files/bin/config_generate
-```
-
-### Install feeds
-
-```bash
-./scripts/feeds update -a
-./scripts/feeds install -a
-```
-
-### Generate config
-
-```bash
-make menuconfig
-```
-
-### (Option) Download `.config`
-
-```bash
-rm .config
-wget -O .config https://raw.githubusercontent.com/eallion/openwrt/refs/heads/main/.config
-```
-
-### Make
-
-```bash
-# make download -j32
-# make V=s -j$(nproc)
-
-bash make_immortalwrt.sh
-```
-
-### Regenerate config
-
-```bash
-rm -rf ./tmp && rm -rf .config
-make menuconfig
-make download -j8
-make V=s -j$(nproc)
-```
-
-Then you can find firmware at `immortalwrt/bin/targets/x86/64/` later.
-
-### License
-
-[MIT](https://github.com/P3TERX/Actions-OpenWrt/blob/master/LICENSE) © P3TERX
