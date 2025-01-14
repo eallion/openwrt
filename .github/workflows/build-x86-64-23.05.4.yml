@@ -30,10 +30,24 @@ jobs:
       - name: Set executable permissions
         run: chmod +x ${{ github.workspace }}/x86-64/build.sh
 
+      - name: Set default values if inputs are not provided
+        run: |
+          if [ -z "${{ github.event.inputs.profile }}" ]; then
+            echo "profile=${{ github.event.inputs.profile.default || '1024' }}" >> $GITHUB_ENV
+          else
+            echo "profile=${{ github.event.inputs.profile }}" >> $GITHUB_ENV
+          fi
+
+          if [ -z "${{ github.event.inputs.include_docker }}" ]; then
+            echo "include_docker=${{ github.event.inputs.include_docker.default || 'no' }}" >> $GITHUB_ENV
+          else
+            echo "include_docker=${{ github.event.inputs.include_docker }}" >> $GITHUB_ENV
+          fi
+
       - name: Build ImmortalWrt-x86-64-EFI
         run: |
-          profiles="${{ github.event.inputs.profile }}"
-          include_docker="${{ github.event.inputs.include_docker }}"
+          profiles="${{ env.profile }}"
+          include_docker="${{ env.include_docker }}"
           
           IFS=',' read -r -a profile_array <<< "$profiles"
           
