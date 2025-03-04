@@ -44,6 +44,51 @@ jobs:
             echo "include_docker=${{ github.event.inputs.include_docker }}" >> $GITHUB_ENV
           fi
 
+      - name: Download custom IPK files
+        id: download-ipk
+        run: |
+          # 创建目录
+          mkdir -p custom_pkgs
+
+          # 定义仓库和文件匹配规则
+          REPO="QiuSimons/luci-app-daed"
+          FILE_PATTERNS=(
+            "daed_.*_x86_64.ipk"
+            "luci-app-daed_.*_all.ipk"
+            "luci-i18n-daed-zh-cn_.*_all.ipk"
+          )
+
+          # 获取最新 Release 的资产列表
+          RELEASE_API_URL="https://api.github.com/repos/$REPO/releases/latest"
+          ASSETS=$(curl -sSL "$RELEASE_API_URL" | jq -r '.assets[].browser_download_url')
+
+          if [ -z "$ASSETS" ]; then
+            echo "::error::Failed to fetch release assets"
+            exit 1
+          fi
+
+          # 下载匹配的文件
+          DOWNLOADED=0
+          for pattern in "${FILE_PATTERNS[@]}"; do
+            file_url=$(echo "$ASSETS" | grep -E "$pattern" | head -1)
+            if [ -n "$file_url" ]; then
+              echo "Downloading: $file_url"
+              wget -q -O "custom_pkgs/$(basename "$file_url")" "$file_url"
+              if [ $? -eq 0 ]; then
+                DOWNLOADED=$((DOWNLOADED + 1))
+              else
+                echo "::error::Failed to download $file_url"
+                exit 1
+              fi
+            fi
+          done
+
+          # 验证是否下载全部文件
+          if [ $DOWNLOADED -ne 3 ]; then
+            echo "::error::Missing required IPK files"
+            exit 1
+          fi
+
       - name: Build ImmortalWrt-x86-64-EFI
         run: |
           profiles="${{ env.profile }}"
@@ -60,6 +105,7 @@ jobs:
               -v "${{ github.workspace }}/files:/home/build/immortalwrt/files" \
               -v "${{ github.workspace }}/x86-64/immortalwrt.config:/home/build/immortalwrt/.config" \
               -v "${{ github.workspace }}/x86-64/build.sh:/home/build/immortalwrt/build.sh" \
+              -v "${{ github.workspace }}/custom_pkgs:/home/build/immortalwrt/packages/custom" \
               -e PROFILE=$profile \
               -e INCLUDE_DOCKER=$include_docker \
               immortalwrt/imagebuilder:x86-64-openwrt-23.05.4 /bin/bash /home/build/immortalwrt/build.sh
