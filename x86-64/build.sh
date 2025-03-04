@@ -389,10 +389,16 @@ PACKAGES="$PACKAGES openssl-util"
 PACKAGES="$PACKAGES shellsync"
 PACKAGES="$PACKAGES ucode-mod-html"
 PACKAGES="$PACKAGES ucode-mod-lua"
+PACKAGES="$PACKAGES kmod-xdp-sockets-diag"
 # 增加几个必备组件 方便用户安装 iStore
 PACKAGES="$PACKAGES fdisk"
 PACKAGES="$PACKAGES script-utils"
 PACKAGES="$PACKAGES luci-i18n-samba4-zh-cn"
+
+# 添加 luci-app-daed
+PACKAGES="$PACKAGES daed"
+PACKAGES="$PACKAGES luci-app-daed"
+PACKAGES="$PACKAGES luci-i18n-daed-zh-cn"
 
 # 判断是否需要编译 Docker 插件
 if [ "$INCLUDE_DOCKER" = "yes" ]; then
@@ -405,6 +411,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:
 echo "$PACKAGES"
 
 make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
+# make image PROFILE="generic" EXCLUDE="daed luci-app-daed luci-i18n-daed-zh-cn" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
