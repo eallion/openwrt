@@ -395,8 +395,13 @@ PACKAGES="$PACKAGES fdisk"
 PACKAGES="$PACKAGES script-utils"
 PACKAGES="$PACKAGES luci-i18n-samba4-zh-cn"
 
-# 添加第三方 luci-app-daed（替换官方包）
-PACKAGES="$PACKAGES daed luci-app-daed luci-i18n-daed-zh-cn"
+# 添加 luci-app-daed
+PACKAGES="$PACKAGES dae"
+PACKAGES="$PACKAGES luci-app-dae"
+PACKAGES="$PACKAGES luci-i18n-dae-zh-cn"
+PACKAGES="$PACKAGES daed"
+PACKAGES="$PACKAGES luci-app-daed"
+PACKAGES="$PACKAGES luci-i18n-daed-zh-cn"
 
 # 判断是否需要编译 Docker 插件
 if [ "$INCLUDE_DOCKER" = "yes" ]; then
@@ -404,27 +409,12 @@ if [ "$INCLUDE_DOCKER" = "yes" ]; then
     echo "Adding package: luci-i18n-dockerman-zh-cn"
 fi
 
-# 自定义包检查，主要是 luci-app-daed
-CUSTOM_PKG_DIR="packages/custom"
-REQUIRED_FILES=(
-    "daed_*_x86_64.ipk"
-    "luci-app-daed_*_all.ipk"
-    "luci-i18n-daed-zh-cn_*_all.ipk"
-)
-
-for file_pattern in "${REQUIRED_FILES[@]}"; do
-    if ! ls $CUSTOM_PKG_DIR/$file_pattern >/dev/null 2>&1; then
-        echo "$(date '+%Y-%m-%d %H:%M:%S') - 错误：缺少文件 $file_pattern"
-        exit 1
-    fi
-done
-
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"
 echo "$PACKAGES"
 
-# make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
-make image PROFILE="generic" EXCLUDE="daed luci-app-daed luci-i18n-daed-zh-cn" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
+make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
+# make image PROFILE="generic" EXCLUDE="daed luci-app-daed luci-i18n-daed-zh-cn" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
