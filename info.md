@@ -9,7 +9,7 @@ The current ImmortalWrt build is linked below. It is adviced to use the latest a
 | Source | [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) |
 | Branch | openwrt-23.05 |
 | Architecture | x86-64 |
-| FS | SquashFS |
+| FS | squashfs |
 | FI | EFI |
 | [Sha256](https://github.com/eallion/openwrt/releases/download/2025.01.07-1214/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz.sha256) | 8d7fbd55ef2a88384470ffc665c00ab2e6ce764f77937dcecf2fda64451bc5a0 |
 | Size | 44.64 MB |
