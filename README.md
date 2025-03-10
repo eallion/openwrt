@@ -8,7 +8,7 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 
 它是一个工作流，可快速构建带 Docker 且支持自定义固件大小的 ImmortalWrt。
 
-> 1、支持自定义固件大小 默认 `1GB`  
+> 1、支持自定义固件大小 默认 `4GB`  
 > 2、支持预安装 `docker`（可选）  
 > 3、默认 LAN 口 IP 为 `192.168.0.1`  
 > 4、可以通过 `99-custom.sh` 配置和调整  

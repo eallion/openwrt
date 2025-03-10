@@ -8,7 +8,7 @@ on:
       profile:
         description: '请输入要编译固件大小 单位 (MB)'
         required: true
-        default: '1024'
+        default: '4096'
       include_docker:
         description: |
           是否编译 Docker 插件
@@ -49,7 +49,7 @@ jobs:
       - name: Set default values if inputs are not provided
         run: |
           if [ -z "${{ github.event.inputs.profile }}" ]; then
-            echo "profile=${{ github.event.inputs.profile.default || '1024' }}" >> $GITHUB_ENV
+            echo "profile=${{ github.event.inputs.profile.default || '4096' }}" >> $GITHUB_ENV
           else
             echo "profile=${{ github.event.inputs.profile }}" >> $GITHUB_ENV
           fi
