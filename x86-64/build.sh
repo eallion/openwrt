@@ -23,8 +23,8 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始编译..."
 
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""
-PACKAGES="$PACKAGES luci-app-acme"
-PACKAGES="$PACKAGES luci-i18n-acme-zh-cn"
+# PACKAGES="$PACKAGES luci-app-acme"
+# PACKAGES="$PACKAGES luci-i18n-acme-zh-cn"
 PACKAGES="$PACKAGES luci-app-autoreboot"
 PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
 PACKAGES="$PACKAGES luci-app-ddns-go"

@@ -210,19 +210,19 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
 
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          retain_days: 7
-          keep_minimum_runs: 10
+#       - name: Delete workflow runs
+#         uses: Mattraks/delete-workflow-runs@main
+#         with:
+#           retain_days: 7
+#           keep_minimum_runs: 10
 
-      - name: Remove old Releases
-        uses: dev-drprasad/delete-older-releases@master
-        with:
-          keep_latest: 5
-          delete_tags: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
+#       - name: Remove old Releases
+#         uses: dev-drprasad/delete-older-releases@master
+#         with:
+#           keep_latest: 5
+#           delete_tags: false
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.TOKEN_FOR_OPENWRT }}
 
       - name: Send mail
         uses: dawidd6/action-send-mail@v4
