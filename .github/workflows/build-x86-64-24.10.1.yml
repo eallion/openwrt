@@ -237,7 +237,7 @@ jobs:
           #  * smtp+starttls://user:password@server:port
           # connection_url: ${{secrets.MAIL_CONNECTION}}
           # Required mail server address if not connection_url:
-          server_address: smtpdm.aliyun.com
+          server_address: mail.smtp2go.com
           # Server port, default 25:
           server_port: 465
           # Optional whether this connection use TLS (default is true if server_port is 465)
@@ -249,7 +249,7 @@ jobs:
           # Required mail subject:
           subject: ImmortalWrt Build Successful
           # Required recipients' addresses:
-          to: eallion.s+github+openwrt@gmail.com
+          to: eallion.s+github@gmail.com
           # Required sender full name (address can be skipped):
           from: ImmortalWrt Build
           # Optional plain body:
