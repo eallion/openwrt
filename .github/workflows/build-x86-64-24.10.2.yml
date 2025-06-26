@@ -1,8 +1,8 @@
-name: build-x86-64-immortalwrt-24.10.1
+name: build-x86-64-immortalwrt-24.10.2
 
 on:
   repository_dispatch:
-    types: [immortalwrt-update-24101]
+    types: [immortalwrt-update-24102]
   workflow_dispatch:
     inputs:
       profile:
@@ -150,7 +150,7 @@ jobs:
               -e ENABLE_PPPOE=$enable_pppoe \
               -e PPPOE_ACCOUNT=$pppoe_account \
               -e PPPOE_PASSWORD=$pppoe_password \
-              immortalwrt/imagebuilder:x86-64-openwrt-24.10.1 /bin/bash /home/build/immortalwrt/build.sh
+              immortalwrt/imagebuilder:x86-64-openwrt-24.10.2 /bin/bash /home/build/immortalwrt/build.sh
           done
       
       - name: Generate Firmware SHA-256
@@ -168,14 +168,14 @@ jobs:
           RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           touch release.txt
-          echo -e "### 📦️ ImmortalWrt 24.10.1 x86-64\n" >> release.txt
+          echo -e "### 📦️ ImmortalWrt 24.10.2 x86-64\n" >> release.txt
           echo -e "The current ImmortalWrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
           echo "| Meta | Detail |" >> release.txt
           echo "| --- | --- |" >> release.txt
           echo -e "| Image | ⬇️ [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz) |" >> release.txt
           echo -e "| Date | `date +"%H:%M %a, %b %d, %Y"` |" >> release.txt
           echo -e "| Source | [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) |" >> release.txt
-          echo -e "| Branch | openwrt-24.10.1 |" >> release.txt
+          echo -e "| Branch | openwrt-24.10.2 |" >> release.txt
           echo -e "| Architecture | x86-64 |" >> release.txt
           echo -e "| FS | squashfs |" >> release.txt
           echo -e "| FI | EFI |" >> release.txt
