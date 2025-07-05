@@ -23,18 +23,16 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始编译..."
 
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""
-# PACKAGES="$PACKAGES luci-app-acme"
-# PACKAGES="$PACKAGES luci-i18n-acme-zh-cn"
 PACKAGES="$PACKAGES luci-app-autoreboot"
 PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
 PACKAGES="$PACKAGES luci-app-ddns-go"
 PACKAGES="$PACKAGES luci-i18n-ddns-go-zh-cn"
 PACKAGES="$PACKAGES luci-app-cloudflared"
 PACKAGES="$PACKAGES luci-i18n-cloudflared-zh-cn"
+PACKAGES="$PACKAGES luci-app-daed"
+PACKAGES="$PACKAGES luci-i18n-daed-zh-cn"
 PACKAGES="$PACKAGES luci-app-diskman"
 PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
-PACKAGES="$PACKAGES luci-app-dockerman"
-PACKAGES="$PACKAGES luci-i18n-dockerman-zh-cn"
 PACKAGES="$PACKAGES luci-app-filebrowser"
 PACKAGES="$PACKAGES luci-i18n-filebrowser-zh-cn"
 PACKAGES="$PACKAGES luci-app-homeproxy"
@@ -60,18 +58,18 @@ PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 PACKAGES="$PACKAGES fdisk cfdisk"
 PACKAGES="$PACKAGES script-utils"
 
-# 添加 luci-app-daed
-PACKAGES="$PACKAGES daed luci-app-daed luci-i18n-daed-zh-cn"
 
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"
 echo "$PACKAGES"
 
-make image PROFILE="generic" \
-    EXCLUDE="daed luci-app-daed luci-i18n-daed-zh-cn" \
-    PACKAGES="$PACKAGES" \
-    FILES="/home/build/immortalwrt/files" \
-    ROOTFS_PARTSIZE=$PROFILE
+make image PROFILE="generic" PACKAGES="$PACKAGES" FILES="/home/build/immortalwrt/files" ROOTFS_PARTSIZE=$PROFILE
+
+# make image PROFILE="generic" \
+#     EXCLUDE="daed luci-app-daed luci-i18n-daed-zh-cn" \
+#     PACKAGES="$PACKAGES" \
+#     FILES="/home/build/immortalwrt/files" \
+#     ROOTFS_PARTSIZE=$PROFILE
 
 if [ $? -ne 0 ]; then
     echo "$(date '+%Y-%m-%d %H:%M:%S') - Error: Build failed!"
