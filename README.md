@@ -11,28 +11,28 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 > 1、支持自定义固件大小 默认 `4GB`  
 > 2、支持预安装 `docker`（可选）  
 > 3、默认 LAN 口 IP 为 `192.168.0.1`  
-> 4、可以通过 `99-custom.sh` 配置和调整  
-> 5、`x86-64/build.sh` 可以添加删除插件
+> 4、可以通过 `files/etc/uci-defaults/99-custom.sh` 配置和调整  
+> 5、可以通过 `shell/custom-packages.sh` 添加或删除第三方插件  
+> 6、可以通过 `x86-64/build.sh` 添加删除插件  
+> 7、`shell/cloudflared.sh` 添加 Cloudflared 二进制文件  
 
 ### ImmortalWrt 软件仓库镜像
 
-https://help.mirrors.cernet.edu.cn/immortalwrt/
+- https://help.mirrors.cernet.edu.cn/immortalwrt/
 
 ### 如何查询都有哪些插件？
 
-https://mirror.nju.edu.cn/immortalwrt/releases/24.10.2/packages/x86_64/luci/
-https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.2/packages/x86_64/luci/
+- https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.2/packages/x86_64/luci/
+- https://mirror.nju.edu.cn/immortalwrt/releases/24.10.2/packages/x86_64/luci/
 
 ### Source
 
 - https://github.com/openwrt/openwrt
 - https://github.com/coolsnowwolf/lede
-- https://github.com/Lienol/openwrt-package
 - https://github.com/immortalwrt/immortalwrt
-- https://github.com/wukongdaily/AutoBuildImmortalWrt
 - https://github.com/fw876/helloworld
 - https://github.com/immortalwrt/homeproxy
-- https://github.com/QiuSimons/luci-app-daed
+- https://github.com/wukongdaily/AutoBuildImmortalWrt
 
 ### Download
 
