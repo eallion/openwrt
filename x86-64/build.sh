@@ -69,7 +69,7 @@ PACKAGES="$PACKAGES script-utils"
 PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 
 # ======== shell/cloudflared.sh =======
-# 编译最新版本的 Cloudflared
+# 替换最新版本的 Cloudflared 二进制文件
 
 sh shell/cloudflared.sh
 
