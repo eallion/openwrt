@@ -119,6 +119,7 @@ jobs:
           FILE_SIZE=$(du -b "${{ github.workspace }}/bin/targets/x86/64/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz" | awk '{print $1}')
           FILE_SIZE_MB=$(awk -v size="$FILE_SIZE" 'BEGIN { printf "%.2f", size / (1024 * 1024) }')
           RELEASE_TAG=$(date +"%Y.%m.%d-%H%M")
+          CURRENT_DATE=$(TZ='Asia/Shanghai' date "+%a, %b %-e, %Y %H:%M:%S GMT+8")
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           touch release.txt
           echo -e "### 📦️ ImmortalWrt 24.10.2 x86-64\n" >> release.txt
@@ -126,7 +127,7 @@ jobs:
           echo "| Meta | Detail |" >> release.txt
           echo "| --- | --- |" >> release.txt
           echo -e "| Image | ⬇️ [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz) |" >> release.txt
-          echo -e "| Date | `date +"%H:%M %a, %b %d, %Y"` |" >> release.txt
+          echo -e "| Date | $CURRENT_DATE |" >> release.txt
           echo -e "| Source | [https://github.com/immortalwrt/immortalwrt](https://github.com/immortalwrt/immortalwrt) |" >> release.txt
           echo -e "| Branch | openwrt-24.10 |" >> release.txt
           echo -e "| Architecture | x86-64 |" >> release.txt
