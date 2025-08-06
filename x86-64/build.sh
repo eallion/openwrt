@@ -72,6 +72,7 @@ PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 # 替换最新版本的 Cloudflared 二进制文件
 
 sh shell/cloudflared.sh
+sh shell/ddns-go.sh
 
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"
