@@ -10,7 +10,9 @@ if [ -z "$ddns_go_latest_url" ]; then
   exit 1
 fi
 
-wget -q -O files/usr/bin/ddns-go "$ddns_go_latest_url"
+wget -q -O linux_x86_64.tar.gz "$ddns_go_latest_url"
+tar -zxf linux_x86_64.tar.gz
+mv ddns-go files/usr/bin/ddns-go
 chmod +x files/usr/bin/ddns-go
 rm -f files/usr/bin/ddns-go.fake
 echo "✅ 已下载最新版 DDNS-GO 到 files/usr/bin/ddns-go"
