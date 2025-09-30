@@ -136,7 +136,29 @@ jobs:
           echo -e "| Image | ⬇️ [immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz](https://github.com/eallion/openwrt/releases/download/"$RELEASE_TAG"/immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz) |" >> release.txt
           echo -e "| Sha256 | "$SHA_TMP" |" >> release.txt
           echo -e "| Date | $CURRENT_DATE |" >> release.txt
-          echo -e "| Source | [https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10) |" >> release.txt
+          if [[ "${{ github.event_name }}" == "repository_dispatch" && ! -z "${{ github.event.client_payload.webhook_message }}" ]]; then
+            # Convert message to lowercase, remove quotes, spaces, and "updated" word
+            MESSAGE=$(echo "${{ github.event.client_payload.webhook_message }}" | tr '[:upper:]' '[:lower:]' | tr -d '"' | tr -d ' ' | sed 's/updated//g')
+            case "$MESSAGE" in
+              ddns-go|ddnsgo)
+                echo -e "| Source | [https://github.com/jeessy2/ddns-go](https://github.com/jeessy2/ddns-go) |" >> release.txt
+                ;;
+              cloudflared)
+                echo -e "| Source | [https://github.com/cloudflare/cloudflared](https://github.com/cloudflare/cloudflared) |" >> release.txt
+                ;;
+              immortalwrt)
+                echo -e "| Source | [https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10) |" >> release.txt
+                ;;
+              homeproxy)
+                echo -e "| Source | [https://github.com/immortalwrt/homeproxy](https://github.com/immortalwrt/homeproxy) |" >> release.txt
+                ;;
+              *)
+                echo -e "| Source | [https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10) |" >> release.txt
+                ;;
+            esac
+          else
+            echo -e "| Source | [https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10](https://github.com/immortalwrt/immortalwrt/tree/openwrt-24.10) |" >> release.txt
+          fi
           echo -e "| Branch | openwrt-24.10 |" >> release.txt
           echo -e "| Architecture | x86-64 |" >> release.txt
           echo -e "| FS | squashfs |" >> release.txt
