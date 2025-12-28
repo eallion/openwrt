@@ -33,26 +33,28 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""
 PACKAGES="$PACKAGES luci-app-autoreboot"
-PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
+# PACKAGES="$PACKAGES luci-app-cloudflared"
 PACKAGES="$PACKAGES luci-app-ddns-go"
-PACKAGES="$PACKAGES luci-i18n-ddns-go-zh-cn"
-PACKAGES="$PACKAGES luci-app-cloudflared"
-PACKAGES="$PACKAGES luci-i18n-cloudflared-zh-cn"
 PACKAGES="$PACKAGES luci-app-diskman"
-PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
 PACKAGES="$PACKAGES luci-app-filebrowser"
-PACKAGES="$PACKAGES luci-i18n-filebrowser-zh-cn"
 PACKAGES="$PACKAGES luci-app-homeproxy"
-PACKAGES="$PACKAGES luci-i18n-homeproxy-zh-cn"
 PACKAGES="$PACKAGES luci-app-netdata"
-PACKAGES="$PACKAGES luci-i18n-netdata-zh-cn"
+PACKAGES="$PACKAGES luci-app-p910nd"
 PACKAGES="$PACKAGES luci-app-ttyd"
-PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 PACKAGES="$PACKAGES luci-app-uhttpd"
-PACKAGES="$PACKAGES luci-i18n-uhttpd-zh-cn"
 PACKAGES="$PACKAGES luci-app-vlmcsd"
-PACKAGES="$PACKAGES luci-i18n-vlmcsd-zh-cn"
 PACKAGES="$PACKAGES luci-app-wol"
+PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
+# PACKAGES="$PACKAGES luci-i18n-cloudflared-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-ddns-go-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-filebrowser-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-homeproxy-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-netdata-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-p910nd-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-uhttpd-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-vlmcsd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-wol-zh-cn"
 # OpenSSH SFTP Server
 PACKAGES="$PACKAGES openssh-sftp-server"
@@ -71,7 +73,7 @@ PACKAGES="$PACKAGES $CUSTOM_PACKAGES"
 # ======== shell/cloudflared.sh =======
 # 替换最新版本的 Cloudflared 二进制文件
 
-sh shell/cloudflared.sh
+# sh shell/cloudflared.sh
 sh shell/ddns-go.sh
 
 # 构建镜像
