@@ -63,6 +63,8 @@ PACKAGES="$PACKAGES git git-http"
 # 默认没有中文包
 PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
+# 打印机组件
+PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
 # 增加几个必备组件 方便用户安装 iStore
 PACKAGES="$PACKAGES fdisk cfdisk"
 PACKAGES="$PACKAGES script-utils"
