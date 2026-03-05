@@ -2,7 +2,7 @@
 
 Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 
-[![GitHub](https://img.shields.io/github/license/wukongdaily/AutoBuildImmortalWrt.svg?label=LICENSE&logo=github&logoColor=%20)](https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/LICENSE) [![build-x86-64-immortalwrt-24.10.4](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-24.10.4.yml/badge.svg?branch=wukongdaily%2FAutoBuildImmortalWrt)](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-24.10.4.yml)
+[![GitHub](https://img.shields.io/github/license/wukongdaily/AutoBuildImmortalWrt.svg?label=LICENSE&logo=github&logoColor=%20)](https://github.com/wukongdaily/AutoBuildImmortalWrt/blob/master/LICENSE) [![build-x86-64-immortalwrt-24.10.5](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-24.10.5.yml/badge.svg?branch=wukongdaily%2FAutoBuildImmortalWrt)](https://github.com/eallion/openwrt/actions/workflows/build-x86-64-24.10.5.yml)
 
 ### 🤔 这是什么？
 
@@ -22,8 +22,8 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 
 ### 如何查询都有哪些插件？
 
-- https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.4/packages/x86_64/luci/
-- https://mirror.nju.edu.cn/immortalwrt/releases/24.10.4/packages/x86_64/luci/
+- https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.5/packages/x86_64/luci/
+- https://mirror.nju.edu.cn/immortalwrt/releases/24.10.5/packages/x86_64/luci/
 
 ### Source
 

@@ -1,8 +1,8 @@
-name: build-x86-64-immortalwrt-24.10.4
+name: build-x86-64-immortalwrt-24.10.5
 
 on:
   repository_dispatch:
-    types: [immortalwrt-update-24104]
+    types: [immortalwrt-update-2410]
   workflow_dispatch:
     inputs:
       profile:
@@ -103,7 +103,7 @@ jobs:
               -e ENABLE_PPPOE=$enable_pppoe \
               -e PPPOE_ACCOUNT=$pppoe_account \
               -e PPPOE_PASSWORD=$pppoe_password \
-              immortalwrt/imagebuilder:x86-64-openwrt-24.10.4 /bin/bash /home/build/immortalwrt/build.sh
+              immortalwrt/imagebuilder:x86-64-openwrt-24.10.5 /bin/bash /home/build/immortalwrt/build.sh
           done
       
       - name: Generate Firmware SHA-256
@@ -122,7 +122,7 @@ jobs:
           CURRENT_DATE=$(TZ='Asia/Shanghai' date "+%a, %b %-e, %Y %H:%M:%S GMT+8")
           echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_OUTPUT
           touch release.txt
-          echo -e "### 📦️ ImmortalWrt 24.10.4 x86-64\n" >> release.txt
+          echo -e "### 📦️ ImmortalWrt 24.10.5 x86-64\n" >> release.txt
           echo -e "The current ImmortalWrt build is linked below. It is adviced to use the latest available release if possible.\n" >> release.txt
           echo "| Meta | Detail |" >> release.txt
           echo "| --- | --- |" >> release.txt
