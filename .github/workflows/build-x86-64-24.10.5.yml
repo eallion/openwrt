@@ -175,8 +175,7 @@ jobs:
           echo -e '```\n' >> release.txt
           echo -e 'One-click verification. Output `OK` to true:\n' >> release.txt
           echo '```bash' >> release.txt
-          echo -e "echo \"$SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check\n" >> release.txt
-          echo -e '# immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz: OK' >> release.txt
+          echo -e "echo \"$SHA_TMP *immortalwrt-x86-64-generic-squashfs-combined-efi.img.gz\" | shasum -a 256 --check" >> release.txt
           echo -e '```\n' >> release.txt
           echo -e '### 🗃️ ImmortalWrt Downloads Archive\n' >> release.txt
           echo -e "- [**downloads.immortalwrt.org**](https://downloads.immortalwrt.org/)" >> release.txt
