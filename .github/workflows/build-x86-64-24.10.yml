@@ -221,7 +221,7 @@ jobs:
           # Required recipients' addresses:
           to: eallion.s+github@gmail.com
           # Required sender full name (address can be skipped):
-          from: ImmortalWrt Build
+          from: 'ImmortalWrt Build <eallion.s+github@gmail.com>'
           # Optional plain body:
           # body: Build job of ${{github.repository}} completed successfully!
           # Optional HTML body read from file:
