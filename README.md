@@ -22,8 +22,8 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 
 ### 如何查询都有哪些插件？
 
-- https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.5/packages/x86_64/luci/
-- https://mirror.nju.edu.cn/immortalwrt/releases/24.10.5/packages/x86_64/luci/
+- https://mirrors.sjtug.sjtu.edu.cn/immortalwrt/releases/24.10.6/packages/x86_64/luci/
+- https://mirror.nju.edu.cn/immortalwrt/releases/24.10.6/packages/x86_64/luci/
 
 ### Source
 

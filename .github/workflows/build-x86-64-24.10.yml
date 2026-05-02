@@ -103,7 +103,7 @@ jobs:
               -e ENABLE_PPPOE=$enable_pppoe \
               -e PPPOE_ACCOUNT=$pppoe_account \
               -e PPPOE_PASSWORD=$pppoe_password \
-              immortalwrt/imagebuilder:x86-64-openwrt-24.10.5 /bin/bash /home/build/immortalwrt/build.sh
+              immortalwrt/imagebuilder:x86-64-openwrt-24.10.6 /bin/bash /home/build/immortalwrt/build.sh
           done
       
       - name: Generate Firmware SHA-256
