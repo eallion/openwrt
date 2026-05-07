@@ -67,7 +67,7 @@ PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 # 打印机组件
 PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
 # 增加几个必备组件 方便用户安装 iStore
-# PACKAGES="$PACKAGES adguardhome"
+PACKAGES="$PACKAGES adguardhome"
 PACKAGES="$PACKAGES fdisk cfdisk"
 PACKAGES="$PACKAGES script-utils"
 # ======== shell/custom-packages.sh =======
