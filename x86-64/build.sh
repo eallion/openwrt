@@ -34,8 +34,6 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
 # 定义所需安装的包列表 下列插件你都可以自行删减
 PACKAGES=""
 PACKAGES="$PACKAGES luci-app-autoreboot"
-PACKAGES="$PACKAGES luci-app-acme"
-PACKAGES="$PACKAGES luci-i18n-acme-zh-cn"
 # PACKAGES="$PACKAGES luci-app-cloudflared"
 PACKAGES="$PACKAGES luci-app-ddns-go"
 PACKAGES="$PACKAGES luci-app-diskman"
@@ -66,6 +64,8 @@ PACKAGES="$PACKAGES git git-http"
 # 默认没有中文包
 PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
+# ACME
+PACKAGES="$PACKAGES acme acme-acmesh acme-acmesh-dnsapi luci-app-acme luci-i18n-acme-zh-cn"
 # 打印机组件
 PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
 # 增加几个必备组件 方便用户安装 iStore
