@@ -1,8 +1,8 @@
 name: build-x86-64-immortalwrt-24.10
 
 on:
-  repository_dispatch:
-    types: [immortalwrt-update-2410]
+  # repository_dispatch:
+  #   types: [immortalwrt-update-2410]
   workflow_dispatch:
     inputs:
       profile:
