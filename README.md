@@ -16,6 +16,23 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 > 6、可以通过 `x86-64/build.sh` 添加删除插件  
 > 7、`shell/cloudflared.sh` 添加 Cloudflared 二进制文件  
 
+### 本地构建
+
+使用 `imagebuilder.sh` 脚本在本地通过 Docker 快速打包固件（支持自动启停 Docker、版本选择与配置挂载）：
+
+```bash
+chmod +x imagebuilder.sh
+./imagebuilder.sh
+```
+
+可选参数（通过环境变量传入）：
+
+```bash
+PROFILE=4096 INCLUDE_DOCKER=no ./imagebuilder.sh
+```
+
+固件产物输出至 `bin/targets/x86/64/` 目录。
+
 ### ImmortalWrt 软件仓库镜像
 
 - https://help.mirrors.cernet.edu.cn/immortalwrt/

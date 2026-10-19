@@ -1,10 +1,21 @@
 #!/bin/bash
-# Log file for debugging
-if [ -f shell/apk-custom-packages.sh ]; then
-    source shell/apk-custom-packages.sh
+# 初始化第三方包变量，确保未显式开启时为空
+CUSTOM_PACKAGES=""
+
+# 判断版本是否属于 24.10 系
+IS_2410=0
+if [[ "$BUILD_VERSION" =~ ^24\.10 ]]; then
+    IS_2410=1
 fi
-if [ -f shell/custom-packages.sh ]; then
-    source shell/custom-packages.sh
+
+if [ "$IS_2410" -eq 1 ]; then
+    if [ -f shell/custom-packages.sh ]; then
+        source shell/custom-packages.sh
+    fi
+else
+    if [ -f shell/apk-custom-packages.sh ]; then
+        source shell/apk-custom-packages.sh
+    fi
 fi
 if [ -f shell/switch_repository.sh ]; then
     source shell/switch_repository.sh
@@ -16,19 +27,23 @@ echo "Starting 99-custom.sh at $(date)" >> $LOGFILE
 echo "编译固件大小为: $PROFILE MB"
 echo "Include Docker: $INCLUDE_DOCKER"
 
-if [ -z "$CUSTOM_PACKAGES" ]; then
+if [ -z "${CUSTOM_PACKAGES// }" ]; then
     echo "未选择任何第三方软件包"
 else
-    # 同步第三方 APK 软件仓库
-    echo "正在同步第三方软件仓库..."
-    git clone --depth=1 https://github.com/wukongdaily/apk.git /tmp/store-apk-repo
-
-    # 拷贝 run/x86 下所有 run 文件和 apk 文件到 extra-packages 目录
     mkdir -p /home/build/immortalwrt/extra-packages
-    cp -r /tmp/store-apk-repo/run/x86/* /home/build/immortalwrt/extra-packages/
-
-    echo "文件已拷贝至 extra-packages，开始解压整理..."
-    sh shell/apk-prepare-packages.sh
+    if [ "$IS_2410" -eq 1 ]; then
+        echo "正在同步 24.10 第三方 IPK 软件仓库..."
+        git clone --depth=1 https://github.com/wukongdaily/store.git /tmp/store-repo
+        cp -r /tmp/store-repo/run/x86/* /home/build/immortalwrt/extra-packages/
+        echo "文件已拷贝至 extra-packages，开始解压整理 IPK..."
+        sh shell/prepare-packages.sh
+    else
+        echo "正在同步 25.12 第三方 APK 软件仓库..."
+        git clone --depth=1 https://github.com/wukongdaily/apk.git /tmp/store-apk-repo
+        cp -r /tmp/store-apk-repo/run/x86/* /home/build/immortalwrt/extra-packages/
+        echo "文件已拷贝至 extra-packages，开始解压整理 APK..."
+        sh shell/apk-prepare-packages.sh
+    fi
     ls -lah /home/build/immortalwrt/packages/
 fi
 
@@ -40,26 +55,20 @@ PACKAGES=""
 PACKAGES="$PACKAGES curl"
 PACKAGES="$PACKAGES irqbalance"
 PACKAGES="$PACKAGES luci-app-autoreboot"
-# PACKAGES="$PACKAGES luci-app-cloudflared"
 PACKAGES="$PACKAGES luci-app-ddns-go"
 PACKAGES="$PACKAGES luci-app-diskman"
 PACKAGES="$PACKAGES luci-app-filebrowser"
 PACKAGES="$PACKAGES luci-app-homeproxy"
 PACKAGES="$PACKAGES luci-app-netdata"
-# PACKAGES="$PACKAGES luci-app-p910nd"
-# PACKAGES="$PACKAGES luci-app-ttyd"
 PACKAGES="$PACKAGES luci-app-uhttpd"
 PACKAGES="$PACKAGES luci-app-vlmcsd"
 PACKAGES="$PACKAGES luci-app-wol"
 PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
-# PACKAGES="$PACKAGES luci-i18n-cloudflared-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-ddns-go-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-filebrowser-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-homeproxy-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-netdata-zh-cn"
-# PACKAGES="$PACKAGES luci-i18n-p910nd-zh-cn"
-# PACKAGES="$PACKAGES luci-i18n-ttyd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-uhttpd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-vlmcsd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-wol-zh-cn"
@@ -73,7 +82,7 @@ PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 # ACME
 PACKAGES="$PACKAGES acme acme-acmesh acme-acmesh-dnsapi luci-app-acme luci-i18n-acme-zh-cn"
 # 打印机组件
-PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
+# PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
 # 增加几个必备组件 方便用户安装 iStore
 # PACKAGES="$PACKAGES adguardhome"
 PACKAGES="$PACKAGES fdisk cfdisk"
@@ -97,13 +106,24 @@ if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
     chmod +x files/etc/openclash/core/clash_meta
     wget -q https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geoip.dat -O files/etc/openclash/GeoIP.dat
     wget -q https://github.com/Loyalsoldier/v2ray-rules-dat/releases/latest/download/geosite.dat -O files/etc/openclash/GeoSite.dat
-    URL=$(curl -s https://api.github.com/repos/vernesong/OpenClash/releases/latest \
-      | grep "browser_download_url.*apk" \
-      | head -n1 \
-      | cut -d '"' -f 4)
-    if [ -n "$URL" ]; then
-        echo "下载 OpenClash 最新 apk: $URL"
-        wget "$URL" -P /home/build/immortalwrt/packages/
+    if [ "$IS_2410" -eq 1 ]; then
+        URL=$(curl -s https://api.github.com/repos/vernesong/OpenClash/releases/latest \
+          | grep "browser_download_url.*ipk" \
+          | head -n1 \
+          | cut -d '"' -f 4)
+        if [ -n "$URL" ]; then
+            echo "下载 OpenClash 最新 ipk: $URL"
+            wget "$URL" -P /home/build/immortalwrt/packages/
+        fi
+    else
+        URL=$(curl -s https://api.github.com/repos/vernesong/OpenClash/releases/latest \
+          | grep "browser_download_url.*apk" \
+          | head -n1 \
+          | cut -d '"' -f 4)
+        if [ -n "$URL" ]; then
+            echo "下载 OpenClash 最新 apk: $URL"
+            wget "$URL" -P /home/build/immortalwrt/packages/
+        fi
     fi
 fi
 
@@ -117,10 +137,14 @@ if echo "$PACKAGES" | grep -q "luci-app-ssr-plus"; then
     echo "已下载 mihomo 内核"
 fi
 
-# 替换最新版本的 Cloudflared / DDNS-GO 二进制文件
-# sh shell/cloudflared.sh
-if [ -f shell/ddns-go.sh ]; then
-    sh shell/ddns-go.sh
+# 替换最新版本的 Cloudflared / DDNS-GO 二进制文件（仅在选择对应插件时下载）
+# if echo "$PACKAGES" | grep -q "cloudflared"; then
+#     [ -f shell/cloudflared.sh ] && sh shell/cloudflared.sh
+# fi
+if echo "$PACKAGES" | grep -q "ddns-go"; then
+    if [ -f shell/ddns-go.sh ]; then
+        sh shell/ddns-go.sh
+    fi
 fi
 
 # 构建镜像
