@@ -55,36 +55,24 @@ PACKAGES=""
 PACKAGES="$PACKAGES curl"
 PACKAGES="$PACKAGES irqbalance"
 PACKAGES="$PACKAGES luci-app-autoreboot"
-PACKAGES="$PACKAGES luci-app-ddns-go"
-PACKAGES="$PACKAGES luci-app-diskman"
-PACKAGES="$PACKAGES luci-app-filebrowser"
 PACKAGES="$PACKAGES luci-app-homeproxy"
-PACKAGES="$PACKAGES luci-app-netdata"
 PACKAGES="$PACKAGES luci-app-uhttpd"
 PACKAGES="$PACKAGES luci-app-vlmcsd"
-PACKAGES="$PACKAGES luci-app-wol"
 PACKAGES="$PACKAGES luci-i18n-autoreboot-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-ddns-go-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-diskman-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-filebrowser-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-homeproxy-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-netdata-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-uhttpd-zh-cn"
 PACKAGES="$PACKAGES luci-i18n-vlmcsd-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-wol-zh-cn"
 # OpenSSH SFTP Server
 PACKAGES="$PACKAGES openssh-sftp-server"
 # Git
 PACKAGES="$PACKAGES git git-http"
-# 默认中文与包管理
-PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
-PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
+# TCP BBR
+PACKAGES="$PACKAGES kmod-tcp-bbr"
 # ACME
-PACKAGES="$PACKAGES acme acme-acmesh acme-acmesh-dnsapi luci-app-acme luci-i18n-acme-zh-cn"
+# PACKAGES="$PACKAGES acme acme-acmesh acme-acmesh-dnsapi luci-app-acme luci-i18n-acme-zh-cn"
 # 打印机组件
 # PACKAGES="$PACKAGES avahi-dbus-daemon dbus kmod-usb-printer p910nd usbutils"
 # 增加几个必备组件 方便用户安装 iStore
-# PACKAGES="$PACKAGES adguardhome"
 PACKAGES="$PACKAGES fdisk cfdisk"
 PACKAGES="$PACKAGES script-utils"
 
