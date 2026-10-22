@@ -68,6 +68,9 @@ PACKAGES="$PACKAGES openssh-sftp-server"
 PACKAGES="$PACKAGES git git-http"
 # TCP BBR
 PACKAGES="$PACKAGES kmod-tcp-bbr"
+# 默认中文与包管理
+PACKAGES="$PACKAGES luci-i18n-firewall-zh-cn"
+PACKAGES="$PACKAGES luci-i18n-package-manager-zh-cn"
 # ACME
 # PACKAGES="$PACKAGES acme acme-acmesh acme-acmesh-dnsapi luci-app-acme luci-i18n-acme-zh-cn"
 # 打印机组件
