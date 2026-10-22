@@ -53,6 +53,7 @@ echo "$(date '+%Y-%m-%d %H:%M:%S') - 开始构建固件..."
 # ============= ImmortalWrt 仓库内的插件 =============
 PACKAGES=""
 PACKAGES="$PACKAGES curl"
+PACKAGES="$PACKAGES bind-dig"
 PACKAGES="$PACKAGES irqbalance"
 PACKAGES="$PACKAGES luci-app-autoreboot"
 PACKAGES="$PACKAGES luci-app-homeproxy"
