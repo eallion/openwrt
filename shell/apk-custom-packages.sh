@@ -63,7 +63,7 @@
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-zerotier-zh-cn"
 
 # EasyTier
-CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun luci-app-easytier"
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun easytier luci-app-easytier luci-i18n-easytier-zh-cn"
 
 # FRP
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frpc-zh-cn"

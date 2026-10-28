@@ -140,15 +140,13 @@ if echo "$PACKAGES" | grep -q "luci-app-ssr-plus"; then
     echo "已下载 mihomo 内核"
 fi
 
-# 替换最新版本的 Cloudflared / DDNS-GO 二进制文件（仅在选择对应插件时下载）
+# 替换最新版本的 Cloudflared / DDNS-GO 二进制文件（25.12 apk 体系免去 files 注入，由对应软件包原生提供）
 # if echo "$PACKAGES" | grep -q "cloudflared"; then
 #     [ -f shell/cloudflared.sh ] && sh shell/cloudflared.sh
 # fi
-if echo "$PACKAGES" | grep -q "ddns-go"; then
-    if [ -f shell/ddns-go.sh ]; then
-        sh shell/ddns-go.sh
-    fi
-fi
+# if echo "$PACKAGES" | grep -q "ddns-go"; then
+#     [ -f shell/ddns-go.sh ] && sh shell/ddns-go.sh
+# fi
 
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"
