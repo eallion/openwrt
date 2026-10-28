@@ -62,6 +62,9 @@
 # Zerotier
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-zerotier-zh-cn"
 
+# EasyTier
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun luci-app-easytier"
+
 # FRP
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frpc-zh-cn"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frps-zh-cn"

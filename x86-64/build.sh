@@ -2,9 +2,9 @@
 # 初始化第三方包变量，确保未显式开启时为空
 CUSTOM_PACKAGES=""
 
-# 判断版本是否属于 24.10 系
+# 检测版本系统（25.12 引入了 apk 包管理器与 Linux 6.12，24.10 使用传统 opkg）
 IS_2410=0
-if [[ "$BUILD_VERSION" =~ ^24\.10 ]]; then
+if ! command -v apk >/dev/null 2>&1 && ! grep -q "CONFIG_LINUX_6_12=y" .config 2>/dev/null; then
     IS_2410=1
 fi
 
@@ -109,7 +109,7 @@ if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
           | cut -d '"' -f 4)
         if [ -n "$URL" ]; then
             echo "下载 OpenClash 最新 ipk: $URL"
-            wget "$URL" -P /home/build/immortalwrt/packages/
+            wget -q "$URL" -P /home/build/immortalwrt/packages/
         fi
     else
         URL=$(curl -s https://api.github.com/repos/vernesong/OpenClash/releases/latest \
@@ -118,8 +118,15 @@ if echo "$PACKAGES" | grep -q "luci-app-openclash"; then
           | cut -d '"' -f 4)
         if [ -n "$URL" ]; then
             echo "下载 OpenClash 最新 apk: $URL"
-            wget "$URL" -P /home/build/immortalwrt/packages/
+            wget -q "$URL" -P /home/build/immortalwrt/packages/
         fi
+    fi
+fi
+
+# EasyTier 模块
+if echo "$PACKAGES" | grep -q "luci-app-easytier"; then
+    if [ -f shell/easytier.sh ]; then
+        sh shell/easytier.sh
     fi
 fi
 

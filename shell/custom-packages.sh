@@ -18,6 +18,8 @@
 # VPN
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-tailscale"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-tailscale-zh-cn"
+# EasyTier
+# CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun luci-app-easytier"
 # 分区扩容 by sirpdboy 
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-partexp"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-partexp-zh-cn"
