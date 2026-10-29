@@ -71,6 +71,8 @@ PACKAGES="$PACKAGES luci-i18n-wol-zh-cn"
 PACKAGES="$PACKAGES openssh-sftp-server"
 # Git
 PACKAGES="$PACKAGES git git-http"
+# Daed
+PACKAGES="$PACKAGES daed luci-app-daed luci-i18n-daed-zh-cn kmod-sched-bpf kmod-veth kmod-xdp-sockets-diag kmod-tun ca-bundle"
 # TCP BBR
 PACKAGES="$PACKAGES kmod-tcp-bbr"
 # 默认中文与包管理
