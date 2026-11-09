@@ -130,6 +130,27 @@ if echo "$PACKAGES" | grep -q "luci-app-easytier"; then
     fi
 fi
 
+# TrafficCtl 模块
+if echo "$PACKAGES" | grep -q "luci-app-trafficctl"; then
+    if [ -f shell/trafficctl.sh ]; then
+        sh shell/trafficctl.sh
+    fi
+fi
+
+# Cloudflared 模块
+if echo "$PACKAGES" | grep -q "cloudflared"; then
+    if [ -f shell/cloudflared.sh ]; then
+        sh shell/cloudflared.sh
+    fi
+fi
+
+# DDNS-GO 模块
+if echo "$PACKAGES" | grep -q "ddns-go"; then
+    if [ -f shell/ddns-go.sh ]; then
+        sh shell/ddns-go.sh
+    fi
+fi
+
 # 若构建 ssr-plus 则补充 mihomo 内核
 if echo "$PACKAGES" | grep -q "luci-app-ssr-plus"; then
     echo "已选择 luci-app-ssr-plus，正在下载 mihomo 内核..."
@@ -139,14 +160,6 @@ if echo "$PACKAGES" | grep -q "luci-app-ssr-plus"; then
     chmod +x files/usr/bin/mihomo
     echo "已下载 mihomo 内核"
 fi
-
-# 替换最新版本的 Cloudflared / DDNS-GO 二进制文件（25.12 apk 体系免去 files 注入，由对应软件包原生提供）
-# if echo "$PACKAGES" | grep -q "cloudflared"; then
-#     [ -f shell/cloudflared.sh ] && sh shell/cloudflared.sh
-# fi
-# if echo "$PACKAGES" | grep -q "ddns-go"; then
-#     [ -f shell/ddns-go.sh ] && sh shell/ddns-go.sh
-# fi
 
 # 构建镜像
 echo "$(date '+%Y-%m-%d %H:%M:%S') - Building image with the following packages:"

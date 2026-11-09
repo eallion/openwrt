@@ -14,8 +14,10 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 > 4、可以通过 `files/etc/uci-defaults/99-custom.sh` 配置和调整  
 > 5、可以通过 `shell/apk-custom-packages.sh` 添加或删除第三方插件  
 > 6、可以通过 `x86-64/build.sh` 添加删除插件  
-> 7、`shell/cloudflared.sh` 添加 Cloudflared 二进制文件  
-> 8、`shell/easytier.sh` 独立模块按需安装 EasyTier 核心及 APK 插件  
+> 7、`shell/cloudflared.sh` 独立模块按需重打包并安装 Cloudflared 最新版及 LuCI 中文 APK（默认保持注释）  
+> 8、`shell/ddns-go.sh` 独立模块按需重打包并安装 DDNS-GO 最新版及 LuCI 中文 APK（默认保持注释）  
+> 9、`shell/easytier.sh` 独立模块按需安装 EasyTier 核心及 APK 插件  
+> 10、`shell/trafficctl.sh` 独立模块按需安装 luci-app-trafficctl 及中文语言包 APK  
 
 ### ImmortalWrt 软件仓库镜像
 

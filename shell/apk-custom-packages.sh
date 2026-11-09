@@ -65,12 +65,18 @@
 # EasyTier
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun easytier luci-app-easytier luci-i18n-easytier-zh-cn"
 
+# TrafficCtl (设备流量监控、限速与整形 by YusDyr)
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES conntrack tc-full kmod-sched-core kmod-ifb iw hostapd-utils luci-app-trafficctl luci-i18n-trafficctl-zh-cn"
+
 # FRP
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frpc-zh-cn"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frps-zh-cn"
 
-# DDNS-GO
-# CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-ddns-go-zh-cn"
+# DDNS-GO (保持注释，启用后将自动调用 shell/ddns-go.sh 重打包并安装上游最新版 .apk)
+# CUSTOM_PACKAGES="$CUSTOM_PACKAGES ca-bundle ddns-go luci-app-ddns-go luci-i18n-ddns-go-zh-cn"
+
+# Cloudflared (保持注释，启用后将自动调用 shell/cloudflared.sh 重打包并安装上游最新版 .apk)
+# CUSTOM_PACKAGES="$CUSTOM_PACKAGES ca-bundle cloudflared luci-app-cloudflared luci-i18n-cloudflared-zh-cn"
 
 # Filebrowser
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-filebrowser-go-zh-cn"
