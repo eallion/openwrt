@@ -17,7 +17,7 @@ Build ImmortalWrt quickly using `immortalwrt/imagebuilder` in GitHub Actions.
 > 7、`shell/cloudflared.sh` 独立模块按需重打包并安装 Cloudflared 最新版及 LuCI 中文 APK（默认保持注释）  
 > 8、`shell/ddns-go.sh` 独立模块按需重打包并安装 DDNS-GO 最新版及 LuCI 中文 APK（默认保持注释）  
 > 9、`shell/easytier.sh` 独立模块按需安装 EasyTier 核心及 APK 插件  
-> 10、`shell/trafficctl.sh` 独立模块按需安装 luci-app-trafficctl 及中文语言包 APK  
+> 10、`shell/trafficctl.sh` 独立模块按需安装 trafficctl 核心、luci-app-trafficctl 及中文语言包 APK  
 
 ### ImmortalWrt 软件仓库镜像
 

@@ -131,7 +131,7 @@ if echo "$PACKAGES" | grep -q "luci-app-easytier"; then
 fi
 
 # TrafficCtl 模块
-if echo "$PACKAGES" | grep -q "luci-app-trafficctl"; then
+if echo "$PACKAGES" | grep -qE '(^|[[:space:]])(luci-app-|luci-i18n-)?trafficctl([[:space:]]|$)'; then
     if [ -f shell/trafficctl.sh ]; then
         sh shell/trafficctl.sh
     fi
