@@ -5,8 +5,10 @@
 # 1. 从 YusDyr/luci-app-trafficctl 官方 Releases latest 获取 OpenWrt 25.12 SDK 构建的 APK：
 #    - 主包：luci-app-trafficctl_<ver>-r1_noarch.apk (回退 luci-app-trafficctl.apk)
 #    - 中文语言包：luci-i18n-trafficctl-zh-cn_<ver>-r1_noarch.apk
-# 2. 注入 /home/build/immortalwrt/packages/
-# 3. 更新 /home/build/immortalwrt/packages/packages.adb 索引数据库供 ImageBuilder 构建使用
+# 2. 通过 apk adbdump 读取包内真实 name 与 version，按 <name>-<version>.apk 规范
+#    重命名后注入 /home/build/immortalwrt/packages/（解决上游发布文件名与包元数据
+#    不一致导致的 package mentioned in index not found 问题）
+# 3. 仅当本地签名私钥存在时生成已签名 packages.adb，否则清理旧索引交由 ImageBuilder 签发
 # ==============================================================================
 
 set -e
@@ -16,6 +18,19 @@ echo "=== 正在执行 TrafficCtl 模块准备工作 (25.12 APK) ==="
 REPO="YusDyr/luci-app-trafficctl"
 PKG_DIR="/home/build/immortalwrt/packages"
 TMP_DIR="/tmp/trafficctl-download"
+
+# 定位 apk-tools v3 可执行文件
+APK_BIN="$(command -v apk || true)"
+if [ -z "$APK_BIN" ] && [ -x /home/build/immortalwrt/staging_dir/host/bin/apk ]; then
+    APK_BIN="/home/build/immortalwrt/staging_dir/host/bin/apk"
+elif [ -z "$APK_BIN" ] && [ -x ./staging_dir/host/bin/apk ]; then
+    APK_BIN="./staging_dir/host/bin/apk"
+fi
+
+if [ -z "$APK_BIN" ]; then
+    echo "错误：未找到 apk 工具（请在 OpenWrt 25.12 ImageBuilder 容器环境中运行）"
+    exit 1
+fi
 
 mkdir -p "$PKG_DIR"
 rm -rf "$TMP_DIR"
@@ -28,7 +43,7 @@ I18N_APK_URL=""
 API_RES=$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null || true)
 if [ -n "$API_RES" ]; then
     URLS=$(printf '%s\n' "$API_RES" | grep '"browser_download_url"' | cut -d '"' -f 4 || true)
-    MAIN_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/luci-app-trafficctl_[0-9][^/]*\.apk$' | head -n1 || true)
+    MAIN_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/luci-app-trafficctl[-_][0-9][^/]*\.apk$' | head -n1 || true)
     if [ -z "$MAIN_APK_URL" ]; then
         MAIN_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/luci-app-trafficctl\.apk$' | head -n1 || true)
     fi
@@ -45,7 +60,7 @@ if [ -z "$MAIN_APK_URL" ] || [ -z "$I18N_APK_URL" ]; then
         ASSETS_HTML=$(curl -fsSL "https://github.com/${REPO}/releases/expanded_assets/${LATEST_TAG}" 2>/dev/null || true)
         if [ -n "$ASSETS_HTML" ]; then
             if [ -z "$MAIN_APK_URL" ]; then
-                MAIN_PATH=$(printf '%s\n' "$ASSETS_HTML" | grep -oE "/${REPO}/releases/download/[^\"]+/luci-app-trafficctl_[0-9][^\"]*\.apk" | head -n1 || true)
+                MAIN_PATH=$(printf '%s\n' "$ASSETS_HTML" | grep -oE "/${REPO}/releases/download/[^\"]+/luci-app-trafficctl[-_][0-9][^\"]*\.apk" | head -n1 || true)
                 if [ -z "$MAIN_PATH" ]; then
                     MAIN_PATH=$(printf '%s\n' "$ASSETS_HTML" | grep -oE "/${REPO}/releases/download/[^\"]+/luci-app-trafficctl\.apk" | head -n1 || true)
                 fi
@@ -95,16 +110,48 @@ if [ ! -s "$MAIN_APK_FILE" ] || [ ! -s "$I18N_APK_FILE" ]; then
     exit 1
 fi
 
-# 清理旧版本同名包并复制到 packages 目录
+get_canonical_apk_name() {
+    local apk_file="$1"
+    local adb_json
+    adb_json=$("$APK_BIN" adbdump --format json "$apk_file") || return 1
+    printf '%s' "$adb_json" | python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+info = data['info']
+name = info['name'].strip()
+version = info['version'].strip()
+if not name or not version:
+    raise ValueError('missing name or version')
+print(f'{name}-{version}.apk')
+"
+}
+
+MAIN_CANONICAL_NAME=$(get_canonical_apk_name "$MAIN_APK_FILE")
+I18N_CANONICAL_NAME=$(get_canonical_apk_name "$I18N_APK_FILE")
+
+if [ -z "$MAIN_CANONICAL_NAME" ] || [ -z "$I18N_CANONICAL_NAME" ]; then
+    echo "错误：无法从下载的 TrafficCtl APK 中解析包名或版本号"
+    exit 1
+fi
+
+# 清理旧版本同名包并按 <name>-<version>.apk 规范复制到 packages 目录
 rm -f "${PKG_DIR}"/luci-app-trafficctl*.apk "${PKG_DIR}"/luci-i18n-trafficctl*.apk
-cp -v "$MAIN_APK_FILE" "$I18N_APK_FILE" "$PKG_DIR/"
+cp -v "$MAIN_APK_FILE" "${PKG_DIR}/${MAIN_CANONICAL_NAME}"
+cp -v "$I18N_APK_FILE" "${PKG_DIR}/${I18N_CANONICAL_NAME}"
 rm -rf "$TMP_DIR"
 
-# 3. 为 packages 目录生成/更新 APK 索引数据库 (packages.adb)
-if command -v apk >/dev/null 2>&1; then
-    echo "正在为 packages 目录生成/更新 APK 索引数据库 (packages.adb)..."
-    (cd "$PKG_DIR" && apk mkndx --allow-untrusted -o packages.adb *.apk)
+# 3. 索引处理：若本地签名私钥已存在则更新已签名 packages.adb；否则清理旧索引，
+#    交由 ImageBuilder 在 make image (package_index) 阶段生成并签名，防止未签名索引跳过签名校验
+if [ -f /home/build/immortalwrt/keys/local-private-key.pem ]; then
+    echo "正在为 packages 目录生成/更新已签名 APK 索引数据库 (packages.adb)..."
+    (cd "$PKG_DIR" && "$APK_BIN" mkndx \
+        --keys-dir /home/build/immortalwrt/keys \
+        --sign /home/build/immortalwrt/keys/local-private-key.pem \
+        --allow-untrusted \
+        -o packages.adb *.apk)
     echo "APK 索引数据库更新完成"
+else
+    rm -f "${PKG_DIR}/packages.adb"
 fi
 
 echo "当前 packages 目录内容清单:"

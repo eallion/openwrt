@@ -207,10 +207,19 @@ rm -f "${PKG_DIR}"/ddns-go-[0-9]*.apk "${PKG_DIR}"/luci-app-ddns-go-*.apk "${PKG
 cp -v "$OUT_APK" "$LUCI_APP_APK" "$LUCI_I18N_APK" "$PKG_DIR/"
 rm -rf "$TMP_DIR"
 
-# 4. 为 packages 目录生成/更新 APK 索引数据库 (packages.adb)
-echo "正在为 packages 目录生成/更新 APK 索引数据库 (packages.adb)..."
-(cd "$PKG_DIR" && "$APK_BIN" mkndx --allow-untrusted -o packages.adb *.apk)
-echo "APK 索引数据库更新完成"
+# 4. 索引处理：若本地签名私钥已存在则更新已签名 packages.adb；否则清理旧索引，
+#    交由 ImageBuilder 在 make image (package_index) 阶段生成并签名，防止未签名索引跳过签名校验
+if [ -f /home/build/immortalwrt/keys/local-private-key.pem ]; then
+    echo "正在为 packages 目录生成/更新已签名 APK 索引数据库 (packages.adb)..."
+    (cd "$PKG_DIR" && "$APK_BIN" mkndx \
+        --keys-dir /home/build/immortalwrt/keys \
+        --sign /home/build/immortalwrt/keys/local-private-key.pem \
+        --allow-untrusted \
+        -o packages.adb *.apk)
+    echo "APK 索引数据库更新完成"
+else
+    rm -f "${PKG_DIR}/packages.adb"
+fi
 
 echo "当前 packages 目录内容清单:"
 ls -lah "$PKG_DIR/"
