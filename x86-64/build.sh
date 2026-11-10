@@ -1,4 +1,9 @@
 #!/bin/bash
+# 初始化可选开关，除非显式传入 yes 否则一律关闭
+PROFILE="${PROFILE:-4096}"
+[ "${INCLUDE_DOCKER:-no}" = "yes" ] || INCLUDE_DOCKER="no"
+[ "${ENABLE_PPPOE:-no}" = "yes" ] || ENABLE_PPPOE="no"
+
 # 初始化第三方包变量，确保未显式开启时为空
 CUSTOM_PACKAGES=""
 
