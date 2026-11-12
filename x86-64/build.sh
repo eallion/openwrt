@@ -144,6 +144,13 @@ if echo "$PACKAGES" | grep -qE '(^|[[:space:]])(luci-app-|luci-i18n-)?trafficctl
     fi
 fi
 
+# Nginx Manager 模块
+if echo "$PACKAGES" | grep -qE '(^|[[:space:]])luci-app-nginx-manager([[:space:]]|$)'; then
+    if [ -f shell/nginx-manager.sh ]; then
+        sh shell/nginx-manager.sh
+    fi
+fi
+
 # Cloudflared 模块
 if echo "$PACKAGES" | grep -q "cloudflared"; then
     if [ -f shell/cloudflared.sh ]; then

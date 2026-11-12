@@ -68,6 +68,9 @@ CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun easytier luci-app-easytier luci-i18n-
 # TrafficCtl (设备流量监控、限速与整形 by YusDyr)
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES conntrack tc-full kmod-sched-core kmod-ifb iw hostapd-utils trafficctl luci-app-trafficctl luci-i18n-trafficctl-zh-cn"
 
+# Nginx Manager (Nginx 可视化管理面板 by hello-yunshu，中文翻译已内置；不使用 QUIC，沿用 luci-nginx 默认 nginx-ssl)
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-app-nginx-manager"
+
 # FRP
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frpc-zh-cn"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frps-zh-cn"
