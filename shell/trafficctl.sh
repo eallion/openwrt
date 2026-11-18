@@ -4,6 +4,7 @@
 # 功能：
 # 1. 从 YusDyr/luci-app-trafficctl 官方 Releases latest 获取 OpenWrt 25.12 SDK 构建的 APK：
 #    - 后端核心包：trafficctl_<ver>-r1_noarch.apk (回退 trafficctl.apk，v1.29.0+ 起拆出)
+#    - Telegram 扩展包：trafficctl-telegram_<ver>-r1_noarch.apk (v2.1.2+ 起拆出作为硬依赖)
 #    - Web 界面主包：luci-app-trafficctl_<ver>-r1_noarch.apk (回退 luci-app-trafficctl.apk)
 #    - 中文语言包：luci-i18n-trafficctl-zh-cn_<ver>-r1_noarch.apk
 # 2. 通过 apk adbdump 读取包内真实 name 与 version，按 <name>-<version>.apk 规范
@@ -40,6 +41,7 @@ mkdir -p "$TMP_DIR"
 CORE_APK_URL=""
 MAIN_APK_URL=""
 I18N_APK_URL=""
+TG_APK_URL=""
 
 # 1. 优先通过 GitHub Releases latest API 检索 .apk 下载直链
 API_RES=$(curl -fsSL "https://api.github.com/repos/${REPO}/releases/latest" 2>/dev/null || true)
@@ -49,6 +51,10 @@ if [ -n "$API_RES" ]; then
     if [ -z "$CORE_APK_URL" ]; then
         CORE_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/trafficctl\.apk$' | head -n1 || true)
     fi
+    TG_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/trafficctl-telegram[-_][0-9][^/]*\.apk$' | head -n1 || true)
+    if [ -z "$TG_APK_URL" ]; then
+        TG_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/trafficctl-telegram\.apk$' | head -n1 || true)
+    fi
     MAIN_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/luci-app-trafficctl[-_][0-9][^/]*\.apk$' | head -n1 || true)
     if [ -z "$MAIN_APK_URL" ]; then
         MAIN_APK_URL=$(printf '%s\n' "$URLS" | grep -E '/luci-app-trafficctl\.apk$' | head -n1 || true)
@@ -57,7 +63,7 @@ if [ -n "$API_RES" ]; then
 fi
 
 # 2. 若 GitHub API 触发限流或未完整返回，通过 Releases 重定向与 expanded_assets 页面抓取
-if [ -z "$CORE_APK_URL" ] || [ -z "$MAIN_APK_URL" ] || [ -z "$I18N_APK_URL" ]; then
+if [ -z "$CORE_APK_URL" ] || [ -z "$MAIN_APK_URL" ] || [ -z "$I18N_APK_URL" ] || [ -z "$TG_APK_URL" ]; then
     echo "GitHub API 未完整返回资产链接，正在尝试从 Releases 页面解析..."
     LATEST_EFFECTIVE=$(curl -fsSLI -o /dev/null -w '%{url_effective}' "https://github.com/${REPO}/releases/latest" 2>/dev/null || true)
     LATEST_EFFECTIVE="${LATEST_EFFECTIVE%/}"
@@ -72,6 +78,15 @@ if [ -z "$CORE_APK_URL" ] || [ -z "$MAIN_APK_URL" ] || [ -z "$I18N_APK_URL" ]; t
                 fi
                 if [ -n "$CORE_PATH" ]; then
                     CORE_APK_URL="https://github.com${CORE_PATH}"
+                fi
+            fi
+            if [ -z "$TG_APK_URL" ]; then
+                TG_PATH=$(printf '%s\n' "$ASSETS_HTML" | grep -oE "/${REPO}/releases/download/[^/\"]+/trafficctl-telegram[-_][0-9][^/\"]*\.apk" | head -n1 || true)
+                if [ -z "$TG_PATH" ]; then
+                    TG_PATH=$(printf '%s\n' "$ASSETS_HTML" | grep -oE "/${REPO}/releases/download/[^/\"]+/trafficctl-telegram\.apk" | head -n1 || true)
+                fi
+                if [ -n "$TG_PATH" ]; then
+                    TG_APK_URL="https://github.com${TG_PATH}"
                 fi
             fi
             if [ -z "$MAIN_APK_URL" ]; then
@@ -95,6 +110,9 @@ if [ -z "$CORE_APK_URL" ] || [ -z "$MAIN_APK_URL" ] || [ -z "$I18N_APK_URL" ]; t
         if [ -z "$CORE_APK_URL" ]; then
             CORE_APK_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/trafficctl.apk"
         fi
+        if [ -z "$TG_APK_URL" ]; then
+            TG_APK_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/trafficctl-telegram.apk"
+        fi
         if [ -z "$MAIN_APK_URL" ]; then
             MAIN_APK_URL="https://github.com/${REPO}/releases/download/${LATEST_TAG}/luci-app-trafficctl.apk"
         fi
@@ -109,6 +127,11 @@ if [ -z "$CORE_APK_URL" ]; then
     exit 1
 fi
 
+if [ -z "$TG_APK_URL" ]; then
+    echo "错误：无法获取 trafficctl-telegram 25.12 APK 下载地址"
+    exit 1
+fi
+
 if [ -z "$MAIN_APK_URL" ]; then
     echo "错误：无法获取 luci-app-trafficctl 25.12 APK 下载地址"
     exit 1
@@ -120,11 +143,15 @@ if [ -z "$I18N_APK_URL" ]; then
 fi
 
 CORE_APK_FILE="${TMP_DIR}/$(basename "$CORE_APK_URL")"
+TG_APK_FILE="${TMP_DIR}/$(basename "$TG_APK_URL")"
 MAIN_APK_FILE="${TMP_DIR}/$(basename "$MAIN_APK_URL")"
 I18N_APK_FILE="${TMP_DIR}/$(basename "$I18N_APK_URL")"
 
 echo "正在下载 trafficctl APK: $CORE_APK_URL"
 curl -fsSL "$CORE_APK_URL" -o "$CORE_APK_FILE"
+
+echo "正在下载 trafficctl-telegram APK: $TG_APK_URL"
+curl -fsSL "$TG_APK_URL" -o "$TG_APK_FILE"
 
 echo "正在下载 luci-app-trafficctl APK: $MAIN_APK_URL"
 curl -fsSL "$MAIN_APK_URL" -o "$MAIN_APK_FILE"
@@ -132,7 +159,7 @@ curl -fsSL "$MAIN_APK_URL" -o "$MAIN_APK_FILE"
 echo "正在下载 luci-i18n-trafficctl-zh-cn APK: $I18N_APK_URL"
 curl -fsSL "$I18N_APK_URL" -o "$I18N_APK_FILE"
 
-if [ ! -s "$CORE_APK_FILE" ] || [ ! -s "$MAIN_APK_FILE" ] || [ ! -s "$I18N_APK_FILE" ]; then
+if [ ! -s "$CORE_APK_FILE" ] || [ ! -s "$TG_APK_FILE" ] || [ ! -s "$MAIN_APK_FILE" ] || [ ! -s "$I18N_APK_FILE" ]; then
     echo "错误：下载的 TrafficCtl APK 文件为空"
     exit 1
 fi
@@ -154,17 +181,19 @@ print(f'{name}-{version}.apk')
 }
 
 CORE_CANONICAL_NAME=$(get_canonical_apk_name "$CORE_APK_FILE")
+TG_CANONICAL_NAME=$(get_canonical_apk_name "$TG_APK_FILE")
 MAIN_CANONICAL_NAME=$(get_canonical_apk_name "$MAIN_APK_FILE")
 I18N_CANONICAL_NAME=$(get_canonical_apk_name "$I18N_APK_FILE")
 
-if [ -z "$CORE_CANONICAL_NAME" ] || [ -z "$MAIN_CANONICAL_NAME" ] || [ -z "$I18N_CANONICAL_NAME" ]; then
+if [ -z "$CORE_CANONICAL_NAME" ] || [ -z "$TG_CANONICAL_NAME" ] || [ -z "$MAIN_CANONICAL_NAME" ] || [ -z "$I18N_CANONICAL_NAME" ]; then
     echo "错误：无法从下载的 TrafficCtl APK 中解析包名或版本号"
     exit 1
 fi
 
 # 清理旧版本同名包并按 <name>-<version>.apk 规范复制到 packages 目录
-rm -f "${PKG_DIR}"/trafficctl-*.apk "${PKG_DIR}"/trafficctl_*.apk "${PKG_DIR}"/trafficctl.apk "${PKG_DIR}"/luci-app-trafficctl*.apk "${PKG_DIR}"/luci-i18n-trafficctl*.apk
+rm -f "${PKG_DIR}"/trafficctl-*.apk "${PKG_DIR}"/trafficctl_*.apk "${PKG_DIR}"/trafficctl.apk "${PKG_DIR}"/trafficctl-telegram*.apk "${PKG_DIR}"/luci-app-trafficctl*.apk "${PKG_DIR}"/luci-i18n-trafficctl*.apk
 cp -v "$CORE_APK_FILE" "${PKG_DIR}/${CORE_CANONICAL_NAME}"
+cp -v "$TG_APK_FILE" "${PKG_DIR}/${TG_CANONICAL_NAME}"
 cp -v "$MAIN_APK_FILE" "${PKG_DIR}/${MAIN_CANONICAL_NAME}"
 cp -v "$I18N_APK_FILE" "${PKG_DIR}/${I18N_CANONICAL_NAME}"
 rm -rf "$TMP_DIR"
