@@ -68,6 +68,9 @@ CUSTOM_PACKAGES="$CUSTOM_PACKAGES kmod-tun easytier luci-app-easytier luci-i18n-
 # TrafficCtl (设备流量监控、限速与整形 by YusDyr)
 CUSTOM_PACKAGES="$CUSTOM_PACKAGES conntrack tc-full kmod-sched-core kmod-ifb iw hostapd-utils trafficctl trafficctl-telegram luci-app-trafficctl luci-i18n-trafficctl-zh-cn"
 
+# Carbon 极简毛玻璃主题 by mrjoechen
+CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-theme-carbon"
+
 # FRP
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frpc-zh-cn"
 # CUSTOM_PACKAGES="$CUSTOM_PACKAGES luci-i18n-frps-zh-cn"

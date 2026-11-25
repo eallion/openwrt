@@ -142,6 +142,13 @@ if echo "$PACKAGES" | grep -qE '(^|[[:space:]])(luci-app-|luci-i18n-)?trafficctl
     fi
 fi
 
+# Carbon 主题模块
+if echo "$PACKAGES" | grep -q "luci-theme-carbon"; then
+    if [ -f shell/carbon.sh ]; then
+        sh shell/carbon.sh
+    fi
+fi
+
 # Cloudflared 模块
 if echo "$PACKAGES" | grep -q "cloudflared"; then
     if [ -f shell/cloudflared.sh ]; then
